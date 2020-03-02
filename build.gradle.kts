@@ -54,12 +54,6 @@ tasks {
             options.compilerArgs.add("-Xlint:unchecked")
         }
     }
-
-    tag {
-        message {
-            "v${version}"
-        }
-    }
 }
 
 val sourceJar by tasks.registering(Jar::class) {
