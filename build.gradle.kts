@@ -2,6 +2,8 @@ plugins {
     java
     scala
     `maven-publish`
+    jacoco
+    id("com.adarshr.test-logger") version  "2.0.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,9 +46,11 @@ sourceSets {
 tasks {
     test {
         useJUnitPlatform {
+            includeEngines("junit-jupiter")
             excludeEngines("scalatest")
             exclude("tests")
         }
+        finalizedBy(jacocoTestReport)
     }
 
     java {
