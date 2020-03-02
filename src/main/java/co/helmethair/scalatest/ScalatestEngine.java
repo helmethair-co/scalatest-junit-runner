@@ -34,7 +34,6 @@ public class ScalatestEngine implements TestEngine {
         return runtime.discover(engineDescriptor, classes, Thread.currentThread().getContextClassLoader());
     }
 
-
     @Override
     public void execute(ExecutionRequest executionRequest) {
         JUnitReporter reporter = new JUnitReporter(executionRequest.getEngineExecutionListener(),

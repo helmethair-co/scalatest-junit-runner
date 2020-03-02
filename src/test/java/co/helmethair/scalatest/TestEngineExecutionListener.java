@@ -29,5 +29,4 @@ public class TestEngineExecutionListener implements EngineExecutionListener {
     public void reportingEntryPublished(TestDescriptor testDescriptor, ReportEntry entry) {
 
     }
-
 }
