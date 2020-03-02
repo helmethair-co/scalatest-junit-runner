@@ -16,8 +16,6 @@ public class ScalatestSuiteDescriptor extends ScalatestDescriptor {
         this.scalasuite = scalasuite;
         this.suiteId = suiteId;
         this.suiteName = suiteName;
-
-
     }
 
     @Override

@@ -1,6 +1,5 @@
 package co.helmethair.scalatest.reporter;
 
-
 import co.helmethair.scalatest.descriptor.ScalatestDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestSuiteDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestTestDescriptor;
@@ -12,7 +11,6 @@ import org.scalatest.events.*;
 import scala.Option;
 
 import java.util.Optional;
-
 
 public class JUnitReporter implements Reporter {
     private final EngineExecutionListener junitListener;
@@ -80,13 +78,10 @@ public class JUnitReporter implements Reporter {
 
         if (event instanceof RunStopped) {
             junitListener.executionFinished(rootTestDescriptor, TestExecutionResult.aborted(null));
-
         }
         if (event instanceof RunCompleted) {
             junitListener.executionFinished(rootTestDescriptor, TestExecutionResult.successful());
         }
-
-
     }
 
     public Throwable getSkipWithCause() {

@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Executor {
+    private static final ConfigMap emptyConfigMap = ConfigMap$.MODULE$.empty();
+    private static final scala.collection.immutable.Set<String> chosenStyles = JavaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
+
     public void executeTest(TestDescriptor test, JUnitReporter reporter) {
         try {
             if (reporter.getSkipWithCause() != null) {
@@ -55,9 +58,6 @@ public class Executor {
         Status status = test.getContainingSuite().getScalasuite().runTest(test.getTestName(), createArgs(reporter));
         status.waitUntilCompleted();
     }
-
-    private static final ConfigMap emptyConfigMap = ConfigMap$.MODULE$.empty();
-    private static final scala.collection.immutable.Set<String> chosenStyles = JavaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
 
     private Args createArgs(JUnitReporter reporter) {
         Filter filter = Filter$.MODULE$.apply(

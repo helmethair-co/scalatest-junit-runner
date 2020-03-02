@@ -135,7 +135,6 @@ public class RunnerTest {
                 argThat(a -> a.getUniqueId().toString().endsWith("nested test2 runs]"))
         );
 
-
         verify(listener, atLeastOnce()).executionFinished(
                 argThat(a -> a.getUniqueId().toString().endsWith("nested test1 runs]")),
                 argThat(a -> !a.getThrowable().isPresent()

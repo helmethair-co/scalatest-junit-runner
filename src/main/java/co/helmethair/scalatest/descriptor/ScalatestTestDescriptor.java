@@ -15,7 +15,6 @@ public class ScalatestTestDescriptor extends ScalatestDescriptor {
         this.testName = testName;
     }
 
-
     @Override
     public String getDisplayName() {
         return testName;

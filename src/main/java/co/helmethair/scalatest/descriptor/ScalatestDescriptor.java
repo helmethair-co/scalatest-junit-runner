@@ -11,17 +11,16 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class ScalatestDescriptor implements TestDescriptor {
+    final static UniqueId ENGINE_ID = UniqueId.forEngine(ScalatestEngine.ID);
+    static final ConcurrentHashMap<UniqueId, ScalatestDescriptor> descriptorsById = new ConcurrentHashMap<>();
     private final UniqueId id;
     private TestDescriptor parentDescriptor = null;
     private Set<TestDescriptor> childDescriptors = new HashSet<TestDescriptor>();
-    final static UniqueId ENGINE_ID = UniqueId.forEngine(ScalatestEngine.ID);
-    static final ConcurrentHashMap<UniqueId, ScalatestDescriptor> descriptorsById = new ConcurrentHashMap<>();
 
     protected ScalatestDescriptor(UniqueId id) {
         this.id = id;
         descriptorsById.put(id, this);
     }
-
 
     public static Optional<ScalatestDescriptor> find(String suiteId, String testName) {
         return findById(descriptorId(suiteId, testName));
@@ -30,7 +29,6 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
     public static Optional<ScalatestDescriptor> findById(UniqueId uniqueId) {
         return Optional.ofNullable(descriptorsById.get(uniqueId));
     }
-
 
     static UniqueId testId(String suiteId, String testName) {
         return ENGINE_ID.append("suite", suiteId).append("test", testName);
@@ -48,10 +46,14 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
         }
     }
 
-
     @Override
     public UniqueId getUniqueId() {
         return id;
+    }
+
+    @Override
+    public Optional<TestDescriptor> getParent() {
+        return Optional.ofNullable(parentDescriptor);
     }
 
     @Override
@@ -59,11 +61,6 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
         if (parent != null && (parent instanceof ScalatestDescriptor || parent instanceof ScalatestEngineDescriptor)) {
             this.parentDescriptor = parent;
         }
-    }
-
-    @Override
-    public Optional<TestDescriptor> getParent() {
-        return Optional.ofNullable(parentDescriptor);
     }
 
     @Override
