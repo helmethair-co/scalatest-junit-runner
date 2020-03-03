@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.spy;
 
-public class TaggedTestRunnungTest implements TestHelpers {
+public class TaggedTestRunningTest implements TestHelpers {
 
     String slowTestId = "[engine:scalatest]/[suite:tests.TaggedTestsTest]/[test:tagged Slow runs]";
     String slowFastTestId = "[engine:scalatest]/[suite:tests.TaggedTestsTest]/[test:tagged Fast and Slow runs]";
