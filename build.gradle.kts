@@ -53,6 +53,13 @@ tasks {
         finalizedBy(jacocoTestReport)
     }
 
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+            csv.isEnabled = false
+        }
+    }
     java {
         compileJava {
             options.compilerArgs.add("-Xlint:unchecked")
