@@ -10,6 +10,7 @@ import org.scalatest.Reporter;
 import org.scalatest.events.*;
 import scala.Option;
 
+import java.util.Collections;
 import java.util.Optional;
 
 public class JUnitReporter implements Reporter {
@@ -106,7 +107,7 @@ public class JUnitReporter implements Reporter {
             ScalatestDescriptor newDescriptor = null;
             if (testName != null) {
                 ScalatestSuiteDescriptor suite = (ScalatestSuiteDescriptor) getOrCreateDescriptor(suiteId, suiteName, null);
-                new ScalatestTestDescriptor(suite, testName);
+                new ScalatestTestDescriptor(suite, testName, Collections.emptySet());
             } else {
                 newDescriptor = new ScalatestSuiteDescriptor(null, suiteId, suiteName);
             }
