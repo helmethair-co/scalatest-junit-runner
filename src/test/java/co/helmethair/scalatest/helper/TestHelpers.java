@@ -22,10 +22,10 @@ public interface TestHelpers {
     ScalatestEngine engine = new ScalatestEngine();
 
     default EngineDiscoveryRequest createClassDiscoveryRequest(String... classNames) {
-        return createClassDiscoveryRequest(null,classNames);
+        return createClassDiscoveryRequest(null, classNames);
     }
 
-    default ConfigurationParameters configurationParametersOf(Map<String, Object> configParams){
+    default ConfigurationParameters configurationParametersOf(Map<String, Object> configParams) {
         return new ConfigurationParameters() {
             @Override
             public Optional<String> get(String key) {
@@ -43,6 +43,7 @@ public interface TestHelpers {
             }
         };
     }
+
     @SuppressWarnings("unchecked")
     default EngineDiscoveryRequest createClassDiscoveryRequest(ConfigurationParameters configParams, String... classNames) {
         return new EngineDiscoveryRequest() {
@@ -97,16 +98,16 @@ public interface TestHelpers {
         launcher.execute(discoveredPlan, listener);
     }
 
-    default void verifyTestExecuteCode(int expectedTestCount, RegisterCall.Body body){
+    default void verifyTestExecuteCode(int expectedTestCount, RegisterCall.Body body) {
         RegisterCall.verifyTestExecuteCode(expectedTestCount, body);
     }
 
     default void verifyTestStartReported(String testIdSuffix, TestEngineExecutionListener listener) {
-        verifyTestStartReported(testIdSuffix,listener, atLeastOnce());
+        verifyTestStartReported(testIdSuffix, listener, atLeastOnce());
     }
 
     default void verifyTestStartNotReported(String testIdSuffix, TestEngineExecutionListener listener) {
-        verifyTestStartReported(testIdSuffix,listener, never());
+        verifyTestStartReported(testIdSuffix, listener, never());
     }
 
     default void verifyTestStartReported(String testIdSuffix, TestEngineExecutionListener listener, VerificationMode mode) {
@@ -118,6 +119,7 @@ public interface TestHelpers {
     default void verifyTestStartReported(String testIdSuffix, TestExecutionListener listener) {
         verifyTestStartReported(testIdSuffix, listener, atLeastOnce());
     }
+
     default void verifyTestStartNotReported(String testIdSuffix, TestExecutionListener listener) {
         verifyTestStartReported(testIdSuffix, listener, never());
     }

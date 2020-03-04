@@ -17,18 +17,16 @@ import java.util.Comparator;
 
 public class Executor {
 
-    private boolean skipAfterFail;
-
-    public Executor(){
-        skipAfterFail = false;
-    }
-
-    public Executor(boolean skipAfterFail){
-        this.skipAfterFail = skipAfterFail;
-    }
-
     private static final ConfigMap emptyConfigMap = ConfigMap$.MODULE$.empty();
     private static final scala.collection.immutable.Set<String> chosenStyles = JavaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
+    private boolean skipAfterFail;
+
+    public Executor() {
+        skipAfterFail = false;
+    }
+    public Executor(boolean skipAfterFail) {
+        this.skipAfterFail = skipAfterFail;
+    }
 
     public void executeTest(TestDescriptor test, JUnitReporter reporter) {
         try {

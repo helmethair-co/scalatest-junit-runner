@@ -6,13 +6,10 @@ import static org.mockito.Mockito.*;
 
 public interface RegisterCall {
 
-    interface Body{
-        void apply();
-    }
+    RegisterCall mock = mock(RegisterCall.class);
 
-    RegisterCall mock = mock( RegisterCall.class);
-    static void verifyTestExecuteCode(int expectedTestCount, Body body){
-        synchronized(mock) {
+    static void verifyTestExecuteCode(int expectedTestCount, Body body) {
+        synchronized (mock) {
             Mockito.reset(mock);
             body.apply();
             verify(mock, times(expectedTestCount)).register();
@@ -20,9 +17,13 @@ public interface RegisterCall {
     }
 
     default void register() {
-        synchronized(mock) {
+        synchronized (mock) {
             RegisterCall.mock.register();
         }
+    }
+
+    interface Body {
+        void apply();
     }
 }
 
