@@ -16,12 +16,21 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Executor {
+
     private static final ConfigMap emptyConfigMap = ConfigMap$.MODULE$.empty();
     private static final scala.collection.immutable.Set<String> chosenStyles = JavaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
+    private boolean skipAfterFail;
+
+    public Executor() {
+        skipAfterFail = false;
+    }
+    public Executor(boolean skipAfterFail) {
+        this.skipAfterFail = skipAfterFail;
+    }
 
     public void executeTest(TestDescriptor test, JUnitReporter reporter) {
         try {
-            if (reporter.getSkipWithCause() != null) {
+            if (skipAfterFail && reporter.getSkipWithCause() != null) {
                 reporter.getJunitListener().executionFinished(test, TestExecutionResult.aborted(reporter.getSkipWithCause()));
                 return;
             }

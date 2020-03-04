@@ -1,4 +1,4 @@
-package co.helmethair.scalatest;
+package co.helmethair.scalatest.helper;
 
 import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
