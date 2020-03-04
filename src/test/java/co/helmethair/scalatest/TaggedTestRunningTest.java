@@ -1,5 +1,6 @@
 package co.helmethair.scalatest;
 
+import co.helmethair.scalatest.helper.TestHelpers;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.launcher.TestExecutionListener;
 
@@ -16,10 +17,9 @@ public class TaggedTestRunningTest implements TestHelpers {
 
     @Test
     void fastTest() {
-        TestExecutionListener listener = spy(new TestExecutionListener() {
-        });
+        TestExecutionListener listener = spy(new TestExecutionListener() {});
 
-        launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList("fast"), Arrays.asList(), listener);
+        verifyTestExecuteCode(2, ()-> launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList("fast"), Arrays.asList(), listener));
 
         verifyTestStartReported(fastTestId, listener);
         verifyTestSuccessReported(fastTestId, listener);
@@ -37,7 +37,7 @@ public class TaggedTestRunningTest implements TestHelpers {
         TestExecutionListener listener = spy(new TestExecutionListener() {
         });
 
-        launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList("fast"), Arrays.asList("slow"), listener);
+        verifyTestExecuteCode(1, ()-> launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList("fast"), Arrays.asList("slow"), listener));
 
         verifyTestStartReported(fastTestId, listener);
         verifyTestSuccessReported(fastTestId, listener);
@@ -53,7 +53,7 @@ public class TaggedTestRunningTest implements TestHelpers {
         TestExecutionListener listener = spy(new TestExecutionListener() {
         });
 
-        launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList(), Arrays.asList("slow"), listener);
+        verifyTestExecuteCode(2, ()->launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList(), Arrays.asList("slow"), listener));
 
         verifyTestStartReported(fastTestId, listener);
         verifyTestSuccessReported(fastTestId, listener);
@@ -68,10 +68,9 @@ public class TaggedTestRunningTest implements TestHelpers {
 
     @Test
     void allTagsTest() {
-        TestExecutionListener listener = spy(new TestExecutionListener() {
-        });
+        TestExecutionListener listener = spy(new TestExecutionListener() {});
 
-        launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList(), Arrays.asList(), listener);
+        verifyTestExecuteCode(4, ()->launch(Arrays.asList("tests.TaggedTestsTest"), Arrays.asList(), Arrays.asList(), listener));
 
         verifyTestStartReported(fastTestId, listener);
         verifyTestSuccessReported(fastTestId, listener);
