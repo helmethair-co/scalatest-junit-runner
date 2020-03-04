@@ -4,6 +4,7 @@ plugins {
     `maven-publish`
     jacoco
     id("com.adarshr.test-logger") version "2.0.0"
+    id("io.wusa.semver-git-plugin") version "2.0.2"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -94,3 +95,4 @@ publishing {
 }
 
 project.extra["artifacts"] = arrayOf("maven")
+project.version = semver.info
