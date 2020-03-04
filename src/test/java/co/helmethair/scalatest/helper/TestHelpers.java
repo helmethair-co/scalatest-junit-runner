@@ -1,5 +1,6 @@
-package co.helmethair.scalatest;
+package co.helmethair.scalatest.helper;
 
+import co.helmethair.scalatest.ScalatestEngine;
 import org.junit.platform.engine.*;
 import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
@@ -7,10 +8,9 @@ import org.junit.platform.launcher.*;
 import org.junit.platform.launcher.core.LauncherConfig;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
+import org.mockito.verification.VerificationMode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.argThat;
@@ -21,8 +21,30 @@ public interface TestHelpers {
 
     ScalatestEngine engine = new ScalatestEngine();
 
-    @SuppressWarnings("unchecked")
     default EngineDiscoveryRequest createClassDiscoveryRequest(String... classNames) {
+        return createClassDiscoveryRequest(null,classNames);
+    }
+
+    default ConfigurationParameters configurationParametersOf(Map<String, Object> configParams){
+        return new ConfigurationParameters() {
+            @Override
+            public Optional<String> get(String key) {
+                return Optional.ofNullable(configParams.get(key).toString());
+            }
+
+            @Override
+            public Optional<Boolean> getBoolean(String key) {
+                return Optional.ofNullable((Boolean) configParams.get(key));
+            }
+
+            @Override
+            public int size() {
+                return configParams.size();
+            }
+        };
+    }
+    @SuppressWarnings("unchecked")
+    default EngineDiscoveryRequest createClassDiscoveryRequest(ConfigurationParameters configParams, String... classNames) {
         return new EngineDiscoveryRequest() {
             @Override
             public <T extends DiscoverySelector> List<T> getSelectorsByType(Class<T> selectorType) {
@@ -39,7 +61,7 @@ public interface TestHelpers {
 
             @Override
             public ConfigurationParameters getConfigurationParameters() {
-                return null;
+                return configParams;
             }
         };
     }
@@ -75,26 +97,33 @@ public interface TestHelpers {
         launcher.execute(discoveredPlan, listener);
     }
 
+    default void verifyTestExecuteCode(int expectedTestCount, RegisterCall.Body body){
+        RegisterCall.verifyTestExecuteCode(expectedTestCount, body);
+    }
+
     default void verifyTestStartReported(String testIdSuffix, TestEngineExecutionListener listener) {
-        verify(listener, atLeastOnce()).executionStarted(
+        verifyTestStartReported(testIdSuffix,listener, atLeastOnce());
+    }
+
+    default void verifyTestStartNotReported(String testIdSuffix, TestEngineExecutionListener listener) {
+        verifyTestStartReported(testIdSuffix,listener, never());
+    }
+
+    default void verifyTestStartReported(String testIdSuffix, TestEngineExecutionListener listener, VerificationMode mode) {
+        verify(listener, mode).executionStarted(
                 argThat(a -> a.getUniqueId().toString().endsWith(testIdSuffix))
         );
     }
 
     default void verifyTestStartReported(String testIdSuffix, TestExecutionListener listener) {
-        verify(listener, atLeastOnce()).executionStarted(
-                argThat(a -> a.getUniqueId().endsWith(testIdSuffix))
-        );
+        verifyTestStartReported(testIdSuffix, listener, atLeastOnce());
     }
-
-    default void verifyTestStartNotReported(String testIdSuffix, TestEngineExecutionListener listener) {
-        verify(listener, never()).executionStarted(
-                argThat(a -> a.getUniqueId().toString().endsWith(testIdSuffix))
-        );
-    }
-
     default void verifyTestStartNotReported(String testIdSuffix, TestExecutionListener listener) {
-        verify(listener, never()).executionStarted(
+        verifyTestStartReported(testIdSuffix, listener, never());
+    }
+
+    default void verifyTestStartReported(String testIdSuffix, TestExecutionListener listener, VerificationMode mode) {
+        verify(listener, mode).executionStarted(
                 argThat(a -> a.getUniqueId().endsWith(testIdSuffix))
         );
     }

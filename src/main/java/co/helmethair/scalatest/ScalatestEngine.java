@@ -11,14 +11,16 @@ import org.scalatest.Suite;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ScalatestEngine implements TestEngine {
     public static final String ID = "scalatest";
+    public static String PARAMETER_SKIP_AFTER_FAIL = "scalatest.junit.skip_after_fail";
+    public static boolean DEFAULT_SKIP_AFTER_FAIL = false;
     final static String SCALATEST_PREFIX = "org.scalatest";
 
     Discovery runtime = new Discovery();
-    private Executor executor = new Executor();
 
     @Override
     public String getId() {
@@ -36,6 +38,10 @@ public class ScalatestEngine implements TestEngine {
 
     @Override
     public void execute(ExecutionRequest executionRequest) {
+        Optional<ConfigurationParameters> params = Optional.ofNullable(executionRequest.getConfigurationParameters());
+        boolean skipAfterFail = params.map( p-> p.getBoolean(PARAMETER_SKIP_AFTER_FAIL)
+                .orElse(DEFAULT_SKIP_AFTER_FAIL)).orElse(DEFAULT_SKIP_AFTER_FAIL);
+        Executor executor = new Executor(skipAfterFail);
         JUnitReporter reporter = new JUnitReporter(executionRequest.getEngineExecutionListener(),
                 executionRequest.getRootTestDescriptor());
 
