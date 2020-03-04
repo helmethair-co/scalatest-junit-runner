@@ -3,7 +3,7 @@ plugins {
     scala
     `maven-publish`
     jacoco
-    id("com.adarshr.test-logger") version  "2.0.0"
+    id("com.adarshr.test-logger") version "2.0.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
