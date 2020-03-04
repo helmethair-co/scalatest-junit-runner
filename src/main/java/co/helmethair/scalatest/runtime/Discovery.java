@@ -5,11 +5,15 @@ import co.helmethair.scalatest.descriptor.ScalatestFailedInitDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestSuiteDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestTestDescriptor;
 import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.TestTag;
 import org.scalatest.Suite;
+import scala.Option;
 import scala.collection.JavaConversions;
-import scala.collection.immutable.Set;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Discovery {
 
@@ -34,7 +38,7 @@ public class Discovery {
     private void addSuite(Suite suite, TestDescriptor parent) {
         ScalatestSuiteDescriptor scalatestSuiteDescriptor = new ScalatestSuiteDescriptor(suite, suite.suiteId(), suite.suiteName());
         linkChild(parent, scalatestSuiteDescriptor);
-        addTests(scalatestSuiteDescriptor, suite.testNames());
+        addTests(scalatestSuiteDescriptor, JavaConversions.setAsJavaSet(suite.testNames()));
         JavaConversions.asJavaCollection(suite.nestedSuites()).forEach(scalatestNestedSuite -> {
             try {
                 addSuite(scalatestNestedSuite, scalatestSuiteDescriptor);
@@ -50,8 +54,16 @@ public class Discovery {
     }
 
     private void addTests(ScalatestSuiteDescriptor suite, Set<String> testNames) {
-        JavaConversions.asJavaCollection(testNames).forEach(testName -> {
-            linkChild(suite, new ScalatestTestDescriptor(suite, testName));
-        });
+        testNames.forEach(testName ->
+                linkChild(suite, new ScalatestTestDescriptor(suite, testName, getTags(suite.getScalasuite(), testName))));
+    }
+
+    private Set<TestTag> getTags(Suite scalasuite, String testName) {
+        Option<scala.collection.immutable.Set<String>> tagSetOption = scalasuite.tags().get(testName);
+        if (tagSetOption.isDefined()) {
+            return JavaConversions.setAsJavaSet(tagSetOption.get()).stream()
+                    .map(TestTag::create).collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
     }
 }
