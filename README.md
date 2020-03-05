@@ -20,7 +20,7 @@ This approach is different than using the [gradle-scalatest](https://plugins.gra
 
 ```Groovy
 dependencies {
-  test 'co.helmethair:scalatest-junit-runner:<latest-version>'
+  testRuntime 'co.helmethair:scalatest-junit-runner:<latest-version>'
 }
 
 test {
