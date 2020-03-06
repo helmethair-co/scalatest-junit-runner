@@ -27,7 +27,7 @@ junit_platform_version=1.6.0
 ```
 
 build.gradle
-```Groovy
+```groovy
 plugins {
     id 'scala'
 }
