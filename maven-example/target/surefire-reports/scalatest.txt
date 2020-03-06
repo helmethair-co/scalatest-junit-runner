@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: scalatest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! - in scalatest
+Failed to load test from co.helmethair.scalatest.example.SomeCodeTest: 'org.scalatest.exceptions.DuplicateTestNameException was thrown inside describe{"someFunc in SomeCode"}, construction cannot continue: "Duplicate test name: someFunc in SomeCode returns '0' for 0 input"'  Time elapsed: 0.005 s  <<< ERROR!
+org.scalatest.exceptions.NotAllowedException: org.scalatest.exceptions.DuplicateTestNameException was thrown inside describe("someFunc in SomeCode"), construction cannot continue: "Duplicate test name: someFunc in SomeCode returns '0' for 0 input"
+	at co.helmethair.scalatest.example.SomeCodeTest.<init>(SomeCodeTest.scala:7)
+Caused by: org.scalatest.exceptions.DuplicateTestNameException: Duplicate test name: someFunc in SomeCode returns '0' for 0 input
+	at co.helmethair.scalatest.example.SomeCodeTest.$anonfun$new$1(SomeCodeTest.scala:16)
+	at co.helmethair.scalatest.example.SomeCodeTest.<init>(SomeCodeTest.scala:7)
+

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="scalatest" time="0.007" tests="1" errors="1" skipped="0" failures="0">
+  <properties>
+    <property name="gopherProxySet" value="false"/>
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/test-classes:/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/classes:/Users/gmora/.m2/repository/org/scala-lang/scala-library/2.13.1/scala-library-2.13.1.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.jar:/Users/gmora/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/gmora/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-launcher/1.6.0/junit-platform-launcher-1.6.0.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest_2.13/3.2.0-M3/scalatest_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-core_2.13/3.2.0-M3/scalatest-core_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-compatible/3.2.0-M3/scalatest-compatible-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalactic/scalactic_2.13/3.2.0-M3/scalactic_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scala-lang/modules/scala-xml_2.13/1.2.0/scala-xml_2.13-1.2.0.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-featurespec_2.13/3.2.0-M3/scalatest-featurespec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-flatspec_2.13/3.2.0-M3/scalatest-flatspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-freespec_2.13/3.2.0-M3/scalatest-freespec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-funsuite_2.13/3.2.0-M3/scalatest-funsuite_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-funspec_2.13/3.2.0-M3/scalatest-funspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-propspec_2.13/3.2.0-M3/scalatest-propspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-refspec_2.13/3.2.0-M3/scalatest-refspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-wordspec_2.13/3.2.0-M3/scalatest-wordspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-diagrams_2.13/3.2.0-M3/scalatest-diagrams_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-matchers-core_2.13/3.2.0-M3/scalatest-matchers-core_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-shouldmatchers_2.13/3.2.0-M3/scalatest-shouldmatchers_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-mustmatchers_2.13/3.2.0-M3/scalatest-mustmatchers_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scala-lang/scala-reflect/2.13.1/scala-reflect-2.13.1.jar:/Users/gmora/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.6.0/junit-jupiter-api-5.6.0.jar:/Users/gmora/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.6.0/junit-jupiter-engine-5.6.0.jar:"/>
+    <property name="java.vm.vendor" value="AdoptOpenJDK"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="user.country" value="HU"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib"/>
+    <property name="sun.java.command" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/surefire/surefirebooter1880552644800013376.jar /Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/surefire 2020-03-06T22-08-51_553-jvmRun1 surefire9167248873951049238tmp surefire_18380329394487104746tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="surefire.test.class.path" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/test-classes:/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/classes:/Users/gmora/.m2/repository/org/scala-lang/scala-library/2.13.1/scala-library-2.13.1.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.jar:/Users/gmora/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/gmora/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.jar:/Users/gmora/.m2/repository/org/junit/platform/junit-platform-launcher/1.6.0/junit-platform-launcher-1.6.0.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest_2.13/3.2.0-M3/scalatest_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-core_2.13/3.2.0-M3/scalatest-core_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-compatible/3.2.0-M3/scalatest-compatible-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalactic/scalactic_2.13/3.2.0-M3/scalactic_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scala-lang/modules/scala-xml_2.13/1.2.0/scala-xml_2.13-1.2.0.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-featurespec_2.13/3.2.0-M3/scalatest-featurespec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-flatspec_2.13/3.2.0-M3/scalatest-flatspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-freespec_2.13/3.2.0-M3/scalatest-freespec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-funsuite_2.13/3.2.0-M3/scalatest-funsuite_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-funspec_2.13/3.2.0-M3/scalatest-funspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-propspec_2.13/3.2.0-M3/scalatest-propspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-refspec_2.13/3.2.0-M3/scalatest-refspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-wordspec_2.13/3.2.0-M3/scalatest-wordspec_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-diagrams_2.13/3.2.0-M3/scalatest-diagrams_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-matchers-core_2.13/3.2.0-M3/scalatest-matchers-core_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-shouldmatchers_2.13/3.2.0-M3/scalatest-shouldmatchers_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scalatest/scalatest-mustmatchers_2.13/3.2.0-M3/scalatest-mustmatchers_2.13-3.2.0-M3.jar:/Users/gmora/.m2/repository/org/scala-lang/scala-reflect/2.13.1/scala-reflect-2.13.1.jar:/Users/gmora/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.6.0/junit-jupiter-api-5.6.0.jar:/Users/gmora/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.6.0/junit-jupiter-engine-5.6.0.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/gmora"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre"/>
+    <property name="basedir" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example"/>
+    <property name="file.separator" value="/"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example/target/surefire/surefirebooter1880552644800013376.jar"/>
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/classes"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="1.8.0_212-b04"/>
+    <property name="user.name" value="gmora"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="10.15.3"/>
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/endorsed"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/Users/gmora/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/var/folders/k6/9kp_nh212x37fkfgyyh2dy508s6_s_/T/"/>
+    <property name="java.version" value="1.8.0_212"/>
+    <property name="user.dir" value="/Users/gmora/helmethair/scalatest-junit-runner/maven-example"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.library.path" value="/Users/gmora/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vendor" value="AdoptOpenJDK"/>
+    <property name="java.vm.version" value="25.212-b04"/>
+    <property name="java.ext.dirs" value="/Users/gmora/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+  </properties>
+  <testcase name="Failed to load test from co.helmethair.scalatest.example.SomeCodeTest: &apos;org.scalatest.exceptions.DuplicateTestNameException was thrown inside describe{&quot;someFunc in SomeCode&quot;}, construction cannot continue: &quot;Duplicate test name: someFunc in SomeCode returns &apos;0&apos; for 0 input&quot;&apos;" classname="scalatest" time="0.005">
+    <error message="org.scalatest.exceptions.DuplicateTestNameException was thrown inside describe(&quot;someFunc in SomeCode&quot;), construction cannot continue: &quot;Duplicate test name: someFunc in SomeCode returns &apos;0&apos; for 0 input&quot;" type="org.scalatest.exceptions.NotAllowedException"><![CDATA[org.scalatest.exceptions.NotAllowedException: org.scalatest.exceptions.DuplicateTestNameException was thrown inside describe("someFunc in SomeCode"), construction cannot continue: "Duplicate test name: someFunc in SomeCode returns '0' for 0 input"
+	at co.helmethair.scalatest.example.SomeCodeTest.<init>(SomeCodeTest.scala:7)
+Caused by: org.scalatest.exceptions.DuplicateTestNameException: Duplicate test name: someFunc in SomeCode returns '0' for 0 input
+	at co.helmethair.scalatest.example.SomeCodeTest.$anonfun$new$1(SomeCodeTest.scala:16)
+	at co.helmethair.scalatest.example.SomeCodeTest.<init>(SomeCodeTest.scala:7)
+]]></error>
+    <system-out><![CDATA[
+ +-------------------------------------------------------------------------------+
+ | WARNING:                                                                      |
+ | The junit-platform-surefire-provider has been deprecated and is scheduled to  |
+ | be removed in JUnit Platform 1.4. Please use the built-in support in Maven    |
+ | Surefire >= 2.22.0 instead.                                                   |
+ | » https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven |
+ +-------------------------------------------------------------------------------+
+
+]]></system-out>
+  </testcase>
+</testsuite>
