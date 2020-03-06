@@ -2,8 +2,8 @@
 [![Tests](https://github.com/helmethair-co/scalatest-junit-runner/workflows/Test/badge.svg)](https://github.com/helmethair-co/scalatest-junit-runner/actions?query=workflow%3A%22Test%22+branch%3Amaster+event%3Apush) [![codecov](https://codecov.io/gh/helmethair-co/scalatest-junit-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/helmethair-co/scalatest-junit-runner)  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner)
 
 
-[JUnit 5](https://junit.org/junit5/docs/current/user-guide/) runner library for [ScalaTest](http://www.scalatest.org/) tests. It can be used to fully [integrate Scalatest into Gradle](https://www.baeldung.com/junit-5-gradle) (version >= 4.5).
-This approach is different than using the [gradle-scalatest](https://plugins.gradle.org/plugin/com.github.maiflai.scalatest) Gradle plugin.
+[JUnit 5](https://junit.org/junit5/docs/current/user-guide/) runner library for [ScalaTest](http://www.scalatest.org/) tests. It can be used to fully [integrate Scalatest into Gradle](https://www.baeldung.com/junit-5-gradle) (version >= 4.5) and to Maven.
+
 ## Getting Started
 
 ## Features
@@ -16,9 +16,10 @@ This approach is different than using the [gradle-scalatest](https://plugins.gra
 
 ## How to use
 
-### Gradle >= 4.5
-
-See [example project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/example)
+### Gradle
+version >= 4.5
+This library allows to run scalatest on the new JUnit Platform (JUnit 5) 
+To run Scalatest on the old JUnit Vintage (JUnit 4) platform use the [gradle-scalatest](https://plugins.gradle.org/plugin/com.github.maiflai.scalatest) Gradle plugin.
 
 gradle.properties
 ```properties
@@ -55,6 +56,65 @@ test{
     }
 }
 ```
+
+See [example gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/gradle-example)
+
+### Maven
+
+Surefire plugin version >= 2.22.0
+
+pom.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project ...
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- junit 5 -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- scalatest -->
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.compat.version}</artifactId>
+            <version>${scalatest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- scalatest junit 5 runner -->
+        <dependency>
+            <groupId>co.helmethair</groupId>
+            <artifactId>scalatest-junit-runner</artifactId>
+            <version>${scalatest.runner.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <plugins>
+        ...
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+            </plugin>
+            ...
+        </plugins>
+    </build>
+</project>
+
+```
+
+See [example maven project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/maven-example)
 
 ### JUnit console
 
