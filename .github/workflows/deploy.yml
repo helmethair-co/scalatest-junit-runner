@@ -20,4 +20,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-        run: ./gradlew publish --no-daemon
+        run: ./gradlew publish --no-daemon -Dorg.gradle.internal.publish.checksums.insecure=true
