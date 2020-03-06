@@ -17,15 +17,41 @@ This approach is different than using the [gradle-scalatest](https://plugins.gra
 
 ### Gradle >= 4.5
 
+See [example project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/example)
+
+gradle.properties
+```properties
+scala_lib_version=2.12
+scala_version=2.12.10
+junit_platform_version=1.6.0
+```
+
+build.gradle
 ```Groovy
-dependencies {
-  testRuntime 'co.helmethair:scalatest-junit-runner:<latest-version>'
+plugins {
+    id 'scala'
 }
 
-test {
-  useJUnitPlatform {
-    includeEngines 'scalatest'
-  }
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.scala-lang:scala-library:$scala_version"
+
+    testImplementation "org.scalatest:scalatest_$scala_lib_version:3.2.0-M3"
+    testRuntime "org.junit.platform:junit-platform-engine:$junit_platform_version"
+    testRuntime "org.junit.platform:junit-platform-launcher:$junit_platform_version"
+    testRuntime "co.helmethair:scalatest-junit-runner:0.1.1"
+}
+
+test{
+    useJUnitPlatform {
+        includeEngines 'scalatest'
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
 }
 ```
 
