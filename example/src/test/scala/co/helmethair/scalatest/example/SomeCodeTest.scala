@@ -10,7 +10,7 @@ class SomeCodeTest extends AnyFunSpec with Matchers{
     }
 
     it("calculates square"){
-      SomeCode.someFunc(3) shouldBe "27"
+      SomeCode.someFunc(3) shouldBe "9"
     }
   }
 }

@@ -18,5 +18,8 @@ dependencies {
 test{
     useJUnitPlatform {
         includeEngines 'scalatest'
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
     }
 }
