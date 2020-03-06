@@ -5,12 +5,12 @@ import co.helmethair.scalatest.descriptor.ScalatestFailedInitDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestSuiteDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestTestDescriptor;
 import co.helmethair.scalatest.reporter.JUnitReporter;
+import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.*;
 import org.scalatest.events.Ordinal;
 import scala.Option;
-import scala.collection.JavaConversions;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +18,7 @@ import java.util.Comparator;
 public class Executor {
 
     private static final ConfigMap emptyConfigMap = ConfigMap$.MODULE$.empty();
-    private static final scala.collection.immutable.Set<String> chosenStyles = JavaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
+    private static final scala.collection.immutable.Set<String> chosenStyles = ScalaConversions.asScalaSet(Collections.<String>emptySet()).toSet();
     private boolean skipAfterFail;
 
     public Executor() {
