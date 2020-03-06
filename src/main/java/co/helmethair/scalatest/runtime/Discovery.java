@@ -4,11 +4,11 @@ import co.helmethair.scalatest.descriptor.ScalatestEngineDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestFailedInitDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestSuiteDescriptor;
 import co.helmethair.scalatest.descriptor.ScalatestTestDescriptor;
+import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestTag;
 import org.scalatest.Suite;
 import scala.Option;
-import scala.collection.JavaConversions;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +38,8 @@ public class Discovery {
     private void addSuite(Suite suite, TestDescriptor parent) {
         ScalatestSuiteDescriptor scalatestSuiteDescriptor = new ScalatestSuiteDescriptor(suite, suite.suiteId(), suite.suiteName());
         linkChild(parent, scalatestSuiteDescriptor);
-        addTests(scalatestSuiteDescriptor, JavaConversions.setAsJavaSet(suite.testNames()));
-        JavaConversions.asJavaCollection(suite.nestedSuites()).forEach(scalatestNestedSuite -> {
+        addTests(scalatestSuiteDescriptor, ScalaConversions.setAsJavaSet(suite.testNames()));
+        ScalaConversions.asJavaCollection(suite.nestedSuites()).forEach(scalatestNestedSuite -> {
             try {
                 addSuite(scalatestNestedSuite, scalatestSuiteDescriptor);
             } catch (Throwable e) {
@@ -61,7 +61,7 @@ public class Discovery {
     private Set<TestTag> getTags(Suite scalasuite, String testName) {
         Option<scala.collection.immutable.Set<String>> tagSetOption = scalasuite.tags().get(testName);
         if (tagSetOption.isDefined()) {
-            return JavaConversions.setAsJavaSet(tagSetOption.get()).stream()
+            return ScalaConversions.setAsJavaSet(tagSetOption.get()).stream()
                     .map(TestTag::create).collect(Collectors.toSet());
         }
         return Collections.emptySet();
