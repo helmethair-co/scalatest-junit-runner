@@ -15,6 +15,10 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew test --no-daemon
+      - name: Grant execute permission for gradlew
+        run: chmod +x scalatest-version-matrix/gradlew
+      - name: Run scala matrix test with Gradle
+        run: ./scalatest-version-matrix/gradlew clean test --no-daemon -PallScalaVersion -p ./scala-version-matrix
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.5
         with:
