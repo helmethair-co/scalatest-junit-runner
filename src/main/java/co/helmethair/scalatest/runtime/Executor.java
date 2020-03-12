@@ -40,12 +40,12 @@ public class Executor {
                     ((ScalatestSuiteDescriptor) test).getScalasuite().execute(
                             null, emptyConfigMap, true, false, false, false, false);
                 } else {
-                    executeSuite(test, reporter);
+                    executeSuite((ScalatestSuiteDescriptor)test, reporter);
                 }
             } else if (test instanceof ScalatestTestDescriptor) {
                 runScalatest(((ScalatestTestDescriptor) test), reporter);
             } else if (test instanceof ScalatestEngineDescriptor) {
-                executeSuite(test, reporter);
+                executeEngine((ScalatestEngineDescriptor)test, reporter);
             } else if (test instanceof ScalatestFailedInitDescriptor) {
                 reporter.getJunitListener().executionStarted(test);
                 reporter.getJunitListener().executionFinished(test, TestExecutionResult.failed(((ScalatestFailedInitDescriptor) test).getCause()));
@@ -55,12 +55,42 @@ public class Executor {
         }
     }
 
-    private void executeSuite(TestDescriptor test, JUnitReporter reporter) {
-        reporter.getJunitListener().executionStarted(test);
-        test.getChildren().stream()
+    private void executeEngine(ScalatestEngineDescriptor testEngine, JUnitReporter reporter) {
+        reporter.getJunitListener().executionStarted(testEngine);
+        testEngine.getChildren().stream()
                 .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
                 .forEach(c -> executeTest(c, reporter));
-        reporter.getJunitListener().executionFinished(test, TestExecutionResult.successful());
+        reporter.getJunitListener().executionFinished(testEngine, TestExecutionResult.successful());
+    }
+
+    private void executeSuite(ScalatestSuiteDescriptor testSuite, JUnitReporter reporter) {
+        reporter.getJunitListener().executionStarted(testSuite);
+
+        Suite suite = testSuite.getScalasuite();
+        BeforeAndAfterAll beforeAfterAll = suite instanceof BeforeAndAfterAll ? ((BeforeAndAfterAll)suite) : null;
+        if (beforeAfterAll != null && !testSuite.getChildren().isEmpty()) {
+            try {
+                beforeAfterAll.beforeAll();
+            } catch (Throwable e) {
+                reporter.getJunitListener().executionFinished(testSuite, TestExecutionResult.failed(e));
+                return;
+            }
+        }
+
+        testSuite.getChildren().stream()
+                .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
+                .forEach(c -> executeTest(c, reporter));
+
+        if (beforeAfterAll != null && !testSuite.getChildren().isEmpty()) {
+            try {
+                beforeAfterAll.afterAll();
+            } catch (Throwable e) {
+                reporter.getJunitListener().executionFinished(testSuite, TestExecutionResult.failed(e));
+                return;
+            }
+        }
+
+        reporter.getJunitListener().executionFinished(testSuite, TestExecutionResult.successful());
     }
 
     private void runScalatest(ScalatestTestDescriptor test, JUnitReporter reporter) {
