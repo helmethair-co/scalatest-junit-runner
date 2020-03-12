@@ -90,6 +90,16 @@ public class RunnerTest implements TestHelpers {
     }
 
     @Test
+    void beforeAllAndAfterEachCalledTest() {
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.BeforeAndAfterEachTest");
+        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
+        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
+        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
+
+        verifyTestExecuteCode(6, () -> engine.execute(executionRequest));
+    }
+
+    @Test
     void beforeAllAndAfterAllCalledTest() {
         EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.BeforeAndAfterAllTest");
         TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
