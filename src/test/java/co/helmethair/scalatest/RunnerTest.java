@@ -19,32 +19,11 @@ public class RunnerTest implements TestHelpers {
         ConfigurationParameters params = configurationParametersOf(new HashMap<String, Object>() {{
             put("scalatest.junit.skip_after_fail", true);
         }});
-        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest(params, "tests.FailingTest");
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest(params, "tests.FailingTest", "tests.NotFailingTest");
 
         TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
         TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
         ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, params);
-
-        verifyTestExecuteCode(0, () -> engine.execute(executionRequest));
-
-        String failingTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 1fails]";
-
-        verifyTestStartReported(failingTestId, listener);
-        verifyTestFailReported(failingTestId, listener);
-
-        String skippedTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 2skips]";
-
-        verifyTestStartNotReported(skippedTestId, listener);
-        verifyTestSkipReported(skippedTestId, listener);
-    }
-
-    @Test
-    void failingAndContinueTest() {
-        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.FailingTest");
-
-        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
-        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
-        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
 
         verifyTestExecuteCode(1, () -> engine.execute(executionRequest));
 
@@ -53,10 +32,42 @@ public class RunnerTest implements TestHelpers {
         verifyTestStartReported(failingTestId, listener);
         verifyTestFailReported(failingTestId, listener);
 
-        String nonSkippedTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 2skips]";
+        String sameSuiteNotFailingTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 2does not fail]";
 
-        verifyTestStartReported(nonSkippedTestId, listener);
-        verifyTestSuccessReported(nonSkippedTestId, listener);
+        verifyTestStartReported(sameSuiteNotFailingTestId, listener);
+        verifyTestSuccessReported(sameSuiteNotFailingTestId, listener);
+
+        String otherSuiteNotFailingSuiteId = "[engine:scalatest]/[suite:tests.NotFailingTest]";
+        String otherSuiteNotFailingTestId = otherSuiteNotFailingSuiteId + "/[test:NotFailingTest does not fail]";
+        verifyTestStartNotReported(otherSuiteNotFailingTestId, listener);
+
+        verifyTestSkipReported(otherSuiteNotFailingSuiteId, listener);
+    }
+
+    @Test
+    void failingAndContinueTest() {
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.FailingTest", "tests.NotFailingTest");
+
+        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
+        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
+        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
+
+        verifyTestExecuteCode(2, () -> engine.execute(executionRequest));
+
+        String failingTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 1fails]";
+
+        verifyTestStartReported(failingTestId, listener);
+        verifyTestFailReported(failingTestId, listener);
+
+        String sameSuiteNotFailingTestId = "[engine:scalatest]/[suite:tests.FailingTest]/[test:FailingTest 2does not fail]";
+
+        verifyTestStartReported(sameSuiteNotFailingTestId, listener);
+        verifyTestSuccessReported(sameSuiteNotFailingTestId, listener);
+
+        String otherSuiteNotFailingTestId = "[engine:scalatest]/[suite:tests.NotFailingTest]/[test:NotFailingTest does not fail]";
+
+        verifyTestStartReported(otherSuiteNotFailingTestId, listener);
+        verifyTestSuccessReported(otherSuiteNotFailingTestId, listener);
     }
 
     @Test

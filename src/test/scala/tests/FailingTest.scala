@@ -10,7 +10,7 @@ class FailingTest extends AnyFunSpec with RegisterCall {
       assert(false)
       register()
     }
-    it("2skips") {
+    it("2does not fail") {
       register()
     }
   }

@@ -2,6 +2,8 @@ package co.helmethair.scalatest.helper;
 
 import org.mockito.Mockito;
 
+import java.util.Map;
+
 import static org.mockito.Mockito.*;
 
 public interface RegisterCall {
@@ -16,9 +18,23 @@ public interface RegisterCall {
         }
     }
 
+    static void verifyTestExecuteCode(Map<String, Integer> callers, Body body) {
+        synchronized (mock) {
+            Mockito.reset(mock);
+            body.apply();
+            callers.forEach((c, t) -> verify(mock, times(t)).register(c));
+        }
+    }
+
     default void register() {
         synchronized (mock) {
             RegisterCall.mock.register();
+        }
+    }
+
+    default void register(String caller) {
+        synchronized (mock) {
+            RegisterCall.mock.register(caller);
         }
     }
 

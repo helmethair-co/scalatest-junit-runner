@@ -102,6 +102,10 @@ public interface TestHelpers {
         RegisterCall.verifyTestExecuteCode(expectedTestCount, body);
     }
 
+    default void verifyTestExecuteCode(Map<String, Integer> calls, RegisterCall.Body body) {
+        RegisterCall.verifyTestExecuteCode(calls, body);
+    }
+
     default void verifyTestStartReported(String testIdSuffix, TestEngineExecutionListener listener) {
         verifyTestStartReported(testIdSuffix, listener, atLeastOnce());
     }

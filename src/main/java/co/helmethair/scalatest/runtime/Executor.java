@@ -9,11 +9,18 @@ import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.*;
+import org.scalatest.events.Event;
 import org.scalatest.events.Ordinal;
+import org.scalatest.events.RunAborted$;
 import scala.Option;
+import scala.Option$;
+import scala.util.control.NonFatal$;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static co.helmethair.scalatest.scala.ScalaConversions.*;
 
 public class Executor {
 
@@ -24,6 +31,7 @@ public class Executor {
     public Executor() {
         skipAfterFail = false;
     }
+
     public Executor(boolean skipAfterFail) {
         this.skipAfterFail = skipAfterFail;
     }
@@ -43,7 +51,9 @@ public class Executor {
                     executeSuite(test, reporter);
                 }
             } else if (test instanceof ScalatestTestDescriptor) {
-                runScalatest(((ScalatestTestDescriptor) test), reporter);
+                //this branch should not execute in normal cases as tests are executed together per suite
+                runScalatests(((ScalatestTestDescriptor) test).getContainingSuite(),
+                        Collections.singletonList((ScalatestTestDescriptor) test), reporter);
             } else if (test instanceof ScalatestEngineDescriptor) {
                 executeSuite(test, reporter);
             } else if (test instanceof ScalatestFailedInitDescriptor) {
@@ -57,26 +67,103 @@ public class Executor {
 
     private void executeSuite(TestDescriptor test, JUnitReporter reporter) {
         reporter.getJunitListener().executionStarted(test);
-        test.getChildren().stream()
+        Set<? extends TestDescriptor> children = test.getChildren();
+
+        List<ScalatestTestDescriptor> tests = children.stream().filter(c -> c instanceof ScalatestTestDescriptor)
+                .map(c -> (ScalatestTestDescriptor) c).collect(Collectors.toList());
+
+        Set<TestDescriptor> nonTests = new HashSet<>(children);
+        nonTests.removeAll(tests);
+
+        if (!tests.isEmpty()) {
+            runScalatests((ScalatestSuiteDescriptor) test,
+                    tests.stream()
+                            .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
+                            .collect(Collectors.toList()),
+                    reporter);
+        }
+
+        nonTests.stream()
                 .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
                 .forEach(c -> executeTest(c, reporter));
+
         reporter.getJunitListener().executionFinished(test, TestExecutionResult.successful());
     }
 
-    private void runScalatest(ScalatestTestDescriptor test, JUnitReporter reporter) {
-        Status status = test.getContainingSuite().getScalasuite().runTest(test.getTestName(), createArgs(reporter));
-        status.waitUntilCompleted();
-    }
+    private void runScalatests(ScalatestSuiteDescriptor containingSuite, List<ScalatestTestDescriptor> tests, JUnitReporter reporter) {
 
-    private Args createArgs(JUnitReporter reporter) {
+        Suite scalasuite = containingSuite.getScalasuite();
+
+        String SelectedTag = "Selected";
+        scala.collection.immutable.Set<String> selectedSet = asScalaSet(Collections.singleton(SelectedTag));
+        Set<String> desiredTests = setAsJavaSet(scalasuite.testNames()).stream()
+                .filter(s -> tests.stream().anyMatch(t -> s.equals(t.getTestName())
+                        || NameTransformer.decode(s).equals(t.getTestName())))
+                .collect(Collectors.toSet());
+
+        scala.collection.immutable.Map<String, scala.collection.immutable.Set<String>> taggedTests = asScalaMap(desiredTests
+                .stream().collect(Collectors.toMap(
+                        Function.identity(),
+                        x -> selectedSet
+                )));
+
+        scala.collection.immutable.Map<String, scala.collection.immutable.Map<String, scala.collection.immutable.Set<String>>> dynaTagsMap = asScalaMap(
+                Collections.singletonMap(scalasuite.suiteId(), taggedTests)
+        );
+        scala.collection.immutable.Map<String, scala.collection.immutable.Set<String>> emptyMap = asScalaMap(Collections.emptyMap());
+
         Filter filter = Filter$.MODULE$.apply(
-                Filter$.MODULE$.apply$default$1(),
+                Option.apply(selectedSet),
                 Filter$.MODULE$.apply$default$2(),
-                Filter$.MODULE$.apply$default$3(),
-                Filter$.MODULE$.apply$default$4()
+                false,
+                new DynaTags(emptyMap, dynaTagsMap)
         );
 
-        return new Args(reporter, new StopperImpl(), filter, emptyConfigMap,
+        Args args = createArgs(reporter, filter);
+        try {
+            Status status = scalasuite.run(Option.apply(null), args);
+            status.waitUntilCompleted();
+        } catch (Throwable e) {
+            if (e instanceof InstantiationException || e instanceof IllegalAccessException) {
+                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage())));
+            } else if (e instanceof NoClassDefFoundError) {
+                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotLoadClass(e.getMessage())));
+            } else {
+                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.bigProblems(e)));
+                if (!NonFatal$.MODULE$.apply(e)) {
+                    throw e;
+                }
+            }
+        }
+    }
+
+    private Event runAborted(Ordinal ordinal, Throwable e, String reason) {
+        return RunAborted$.MODULE$.apply(ordinal,
+                reason,
+                Option.apply(e),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Thread.currentThread().getName(),
+                (new Date()).getTime()
+        );
+    }
+
+    private Args createArgs(JUnitReporter reporter, Filter filter) {
+        Filter filterParam;
+        if (filter == null) {
+            filterParam = Filter$.MODULE$.apply(
+                    Filter$.MODULE$.apply$default$1(),
+                    Filter$.MODULE$.apply$default$2(),
+                    Filter$.MODULE$.apply$default$3(),
+                    Filter$.MODULE$.apply$default$4());
+        } else {
+            filterParam = filter;
+        }
+
+        return new Args(reporter, new StopperImpl(), filterParam, emptyConfigMap,
                 Option.apply(null), new Tracker(new Ordinal(0)), chosenStyles, false,
                 Option.apply(null), Option.apply(null));
     }
