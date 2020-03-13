@@ -113,28 +113,15 @@ public class Executor {
         scala.collection.immutable.Map<String, scala.collection.immutable.Set<String>> emptyMap = asScalaMap(Collections.emptyMap());
 
         Filter filter = Filter$.MODULE$.apply(
-                Option$.MODULE$.apply(selectedSet),
+                Option.apply(selectedSet),
                 Filter$.MODULE$.apply$default$2(),
                 false,
                 new DynaTags(emptyMap, dynaTagsMap)
         );
 
-//        val runStartTime = System.currentTimeMillis
-//
-//        val suiteStartTime = System.currentTimeMillis
-
-//    def dispatchSuiteAborted(e: Throwable): Unit = {
-//                val eMessage = e.getMessage
-//                val rawString =
-//        if (eMessage != null && eMessage.length > 0)
-//            Resources.runOnSuiteException
-//        else
-//            Resources.runOnSuiteExceptionWithMessage(eMessage)
-//
-
         Args args = createArgs(reporter, filter);
         try {
-            Status status = scalasuite.run(Option$.MODULE$.apply(null), args);
+            Status status = scalasuite.run(Option.apply(null), args);
             status.waitUntilCompleted();
         } catch (Throwable e) {
             if (e instanceof InstantiationException || e instanceof IllegalAccessException) {
@@ -153,12 +140,12 @@ public class Executor {
     private Event runAborted(Ordinal ordinal, Throwable e, String reason) {
         return RunAborted$.MODULE$.apply(ordinal,
                 reason,
-                Option$.MODULE$.apply(e),
-                Option$.MODULE$.apply(null),
-                Option$.MODULE$.apply(null),
-                Option$.MODULE$.apply(null),
-                Option$.MODULE$.apply(null),
-                Option$.MODULE$.apply(null),
+                Option.apply(e),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
                 Thread.currentThread().getName(),
                 (new Date()).getTime()
         );
