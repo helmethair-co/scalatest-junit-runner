@@ -11,7 +11,7 @@ public interface ScalaConversions {
     static <T> scala.collection.immutable.Set<T> asScalaSet(Set<T> set) {
         scala.collection.mutable.HashSet<T> scalaSet =  HashSet$.MODULE$.empty();
         //method reference is not virtual enough to be compatible with multiple Scala versions
-        set.forEach(e-> scalaSet.$plus(e));
+        set.forEach(e -> scalaSet.add(e));
         return scalaSet.toSet();
     }
 
