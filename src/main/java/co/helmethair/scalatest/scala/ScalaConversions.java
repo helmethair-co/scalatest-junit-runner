@@ -1,7 +1,6 @@
 package co.helmethair.scalatest.scala;
 
 import scala.collection.Iterator;
-import scala.collection.immutable.HashMap$;
 import scala.collection.immutable.IndexedSeq;
 import scala.collection.mutable.HashSet$;
 
@@ -36,9 +35,12 @@ public interface ScalaConversions {
     }
 
     static <K, V> scala.collection.immutable.Map<K, V> asScalaMap(java.util.Map<K, V> map) {
-        scala.collection.mutable.HashMap<K, V> scalaMap = scala.collection.mutable.HashMap$.MODULE$.empty();
-        map.forEach(scalaMap::put);
-        return HashMap$.MODULE$.<K, V>empty().$plus$plus(scalaMap.toSeq());
+        scala.collection.immutable.HashMap<K, V> scalaMap = scala.collection.immutable.HashMap$.MODULE$.empty();
         java.util.Iterator<Map.Entry<K, V>> i = map.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry<K, V> e = i.next();
+            scalaMap = scalaMap.updated(e.getKey(), e.getValue());
+        }
+        return scalaMap;
     }
 }
