@@ -1,11 +1,8 @@
 package co.helmethair.scalatest.example
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-
-class SomeCodeTest extends AnyFunSpec with Matchers{
-  describe("someFunc in SomeCode"){
-    it("calculates square"){
+class SomeCodeTest extends AnyFunSpec with Matchers {
+  describe("someFunc in SomeCode") {
+    it("calculates square") {
       SomeCode.someFunc(3) shouldBe 9
     }
   }
