@@ -39,5 +39,6 @@ public interface ScalaConversions {
         scala.collection.mutable.HashMap<K, V> scalaMap = scala.collection.mutable.HashMap$.MODULE$.empty();
         map.forEach(scalaMap::put);
         return HashMap$.MODULE$.<K, V>empty().$plus$plus(scalaMap.toSeq());
+        java.util.Iterator<Map.Entry<K, V>> i = map.entrySet().iterator();
     }
 }
