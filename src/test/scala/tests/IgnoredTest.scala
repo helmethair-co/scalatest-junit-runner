@@ -6,11 +6,11 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class IgnoredTest extends AnyFunSuite with BeforeAndAfter with RegisterCall {
 
-    test("Normal Test") {
-        register("not ignored")
-    }
+  test("Normal Test") {
+    register("not ignored")
+  }
 
-    ignore("Ignored Test") {
-        register("ignored")
-    }
+  ignore("Ignored Test") {
+    register("ignored")
+  }
 }
