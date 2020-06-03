@@ -7,11 +7,15 @@ import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.Reporter;
+import org.scalatest.Suite;
 import org.scalatest.events.*;
 import scala.Option;
+import scala.reflect.internal.Trees;
 
 import java.util.Collections;
 import java.util.Optional;
+
+import static co.helmethair.scalatest.scala.OptionHelper.getOrElse;
 
 public class JUnitReporter implements Reporter {
     private final EngineExecutionListener junitListener;
@@ -30,20 +34,17 @@ public class JUnitReporter implements Reporter {
             TestStarting e = (TestStarting) event;
             junitListener.executionStarted(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), e.testName()));
-        }
-        if (event instanceof TestCanceled) {
+        } else if (event instanceof TestCanceled) {
             TestCanceled e = (TestCanceled) event;
             junitListener.executionFinished(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), e.testName()),
                     TestExecutionResult.aborted(getOrElse(e.throwable(), null)));
-        }
-        if (event instanceof TestSucceeded) {
+        } else if (event instanceof TestSucceeded) {
             TestSucceeded e = (TestSucceeded) event;
             junitListener.executionFinished(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), e.testName()),
                     TestExecutionResult.successful());
-        }
-        if (event instanceof TestFailed) {
+        } else if (event instanceof TestFailed) {
             TestFailed e = (TestFailed) event;
             TestDescriptor descriptor = getOrCreateDescriptor(e.suiteId(), e.suiteName(), e.testName());
             Throwable cause = getOrElse(e.throwable(), null);
@@ -51,18 +52,13 @@ public class JUnitReporter implements Reporter {
             junitListener.executionFinished(
                     descriptor,
                     TestExecutionResult.failed(cause));
-        }
-        if (event instanceof RunAborted) {
+        } else if (event instanceof RunAborted) {
             junitListener.executionFinished(rootTestDescriptor,
                     TestExecutionResult.aborted(getOrElse(((RunAborted) event).throwable(), null)));
-        }
-
-        if (event instanceof SuiteStarting) {
+        } else if (event instanceof SuiteStarting) {
             SuiteStarting e = (SuiteStarting) event;
             junitListener.executionStarted(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), null));
-        }
-
         if (event instanceof SuiteAborted) {
             SuiteAborted e = (SuiteAborted) event;
             junitListener.executionFinished(
@@ -70,18 +66,20 @@ public class JUnitReporter implements Reporter {
                     TestExecutionResult.aborted(getOrElse(e.throwable(), null)));
         }
 
-        if (event instanceof SuiteCompleted) {
+                    suiteDescriptor,
+                    TestExecutionResult.failed(ex));
+        } else if (event instanceof SuiteCompleted) {
             SuiteCompleted e = (SuiteCompleted) event;
             junitListener.executionFinished(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), null),
                     TestExecutionResult.successful());
-        }
-
-        if (event instanceof RunStopped) {
+        } else if (event instanceof RunStopped) {
             junitListener.executionFinished(rootTestDescriptor, TestExecutionResult.aborted(null));
-        }
-        if (event instanceof RunCompleted) {
+        } else if (event instanceof RunCompleted) {
             junitListener.executionFinished(rootTestDescriptor, TestExecutionResult.successful());
+        } else if (event instanceof TestIgnored) {
+            TestIgnored e = (TestIgnored) event;
+            junitListener.executionSkipped(getOrCreateDescriptor(e.suiteId(), e.suiteName(), e.testName()), "ignored");
         }
     }
 
@@ -91,14 +89,6 @@ public class JUnitReporter implements Reporter {
 
     public void setSkipWithCause(Throwable skipWithCause) {
         this.skipWithCause = skipWithCause;
-    }
-
-    private <T> T getOrElse(Option<T> option, T defaultValue) {
-        if (option.isDefined()) {
-            return option.get();
-        } else {
-            return defaultValue;
-        }
     }
 
     private TestDescriptor getOrCreateDescriptor(String suiteId, String suiteName, String testName) {
