@@ -12,11 +12,11 @@
     <properties>
         <java.version>1.8</java.version>
         <junit.version>1.6.0</junit.version>
-        <scalatest.runner.version>0.1.2</scalatest.runner.version>
+        <scalatest.runner.version>0.1.4</scalatest.runner.version>
         <scalatest.version>3.2.0-M3</scalatest.version>
         <scala.compat.version>2.13</scala.compat.version>
         <scala.version>2.13.1</scala.version>
-        <scala.maven.plugin>4.3.1</scala.maven.plugin>
+        <scala.maven.plugin>4.4.0</scala.maven.plugin>
         <maven.surefire.version>3.0.0-M3</maven.surefire.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
