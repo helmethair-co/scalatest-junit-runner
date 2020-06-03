@@ -64,6 +64,23 @@ public class BeforeAfterTest implements TestHelpers {
     }
 
     @Test
+    void beforeAllFailedTest() {
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.FailInBeforeAllTest");
+        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
+        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
+        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
+
+        Map<String, Integer> calls = new HashMap<String, Integer>() {{
+            put("before", 1);
+            put("test 1 runs", 0);
+            put("test 2 runs", 0);
+        }};
+
+        verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
+        verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInBeforeAllTest]", listener, null);
+    }
+
+    @Test
     void afterFailedTest() {
         EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.FailInAfterTest");
         TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
@@ -99,6 +116,5 @@ public class BeforeAfterTest implements TestHelpers {
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]/[test:test 1]", listener);
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]/[test:test 2]", listener);
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInAfterAllTest]", listener, null);
-
     }
 }
