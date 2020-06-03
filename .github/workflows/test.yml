@@ -20,7 +20,7 @@ jobs:
       - name: Run Gradle Example
         run: ./gradle-example/gradlew clean test --no-daemon -p ./gradle-example
       - name: Run Maven example
-        run: mvn clean test --file ./maven-example/pom.xml
+        run: mvn clean test --file ./maven-example/pom.xml -B
       - name: Run scala matrix test with Gradle
         run: ./gradlew build --no-daemon && ./scala-version-matrix/gradlew clean test --no-daemon -PallScalaVersion -p ./scala-version-matrix
       - name: Upload coverage to Codecov
