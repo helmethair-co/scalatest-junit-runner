@@ -21,8 +21,8 @@ public class IgnoredTest implements TestHelpers {
         ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
 
         Map<String, Integer> calls = new HashMap<String, Integer>() {{
-         //   put("not ignored", 1);
-           // put("ignored", 0);
+            put("not ignored", 1);
+            put("ignored", 0);
         }};
 
         verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
