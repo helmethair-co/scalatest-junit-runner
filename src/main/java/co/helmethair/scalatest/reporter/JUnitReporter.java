@@ -59,13 +59,11 @@ public class JUnitReporter implements Reporter {
             SuiteStarting e = (SuiteStarting) event;
             junitListener.executionStarted(
                     getOrCreateDescriptor(e.suiteId(), e.suiteName(), null));
-        if (event instanceof SuiteAborted) {
+        } else if (event instanceof SuiteAborted) {
             SuiteAborted e = (SuiteAborted) event;
+            Throwable ex = getOrElse(e.throwable(), null);
+            TestDescriptor suiteDescriptor = getOrCreateDescriptor(e.suiteId(), e.suiteName(), null);
             junitListener.executionFinished(
-                    getOrCreateDescriptor(e.suiteId(), e.suiteName(), null),
-                    TestExecutionResult.aborted(getOrElse(e.throwable(), null)));
-        }
-
                     suiteDescriptor,
                     TestExecutionResult.failed(ex));
         } else if (event instanceof SuiteCompleted) {
