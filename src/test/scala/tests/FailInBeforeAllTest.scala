@@ -1,16 +1,21 @@
 package tests
 
 import co.helmethair.scalatest.helper.RegisterCall
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll}
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 
-class FailInBeforeAllTest extends AnyFunSuite with BeforeAndAfterAll  with RegisterCall {
+class FailInBeforeAllTest extends AnyFunSuite with BeforeAndAfterAll with RegisterCall {
 
-    override def beforeAll(): Unit = {
-        fail("test aborted")
-    }
+  override def beforeAll(): Unit = {
+    register("before")
+    fail()
+  }
 
-    test("never runs") {
-        register()
-    }
+  test("test 1") {
+    register("test 1 runs")
+  }
+
+  test("test 2") {
+    register("test 2 runs")
+  }
 }
