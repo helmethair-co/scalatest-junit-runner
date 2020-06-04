@@ -5,7 +5,7 @@ plugins {
     signing
     jacoco
     id("com.adarshr.test-logger") version "2.0.0"
-    id("io.wusa.semver-git-plugin") version "2.0.2"
+    id("io.wusa.semver-git-plugin") version "2.2.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -41,6 +41,20 @@ sourceSets {
         }
         java {
             setSrcDirs(emptyList<String>())
+        }
+    }
+}
+
+semver {
+    snapshotSuffix = "SNAPSHOT"
+    dirtyMarker = "dirty"
+    initialVersion = "0.1.4"
+    tagPrefix = "v"
+    branches {
+        branch {
+            regex = "master"
+            incrementer = "NO_VERSION_INCREMENTER"
+            formatter = Transformer { "${semver.info.version.major}.${semver.info.version.minor}.${semver.info.version.patch}+build.${semver.info.count}.sha.${semver.info.shortCommit}" }
         }
     }
 }

@@ -152,6 +152,16 @@ public interface TestHelpers {
         );
     }
 
+    default void verifyTestAbortedReportedWith(String testIdsuffix, TestEngineExecutionListener listener, Class<? extends Throwable> cause) {
+        verify(listener, atLeastOnce()).executionFinished(
+                argThat(a -> a.getUniqueId().toString().endsWith(testIdsuffix)),
+                argThat(a -> a.getThrowable().isPresent()
+                        && (cause == null || cause.isInstance(a.getThrowable().get()))
+                        && a.getStatus() == TestExecutionResult.Status.ABORTED
+                )
+        );
+    }
+
     default void verifyTestSkipReported(String testIdsuffix, TestEngineExecutionListener listener) {
         verify(listener, atLeastOnce()).executionFinished(
                 argThat(a -> a.getUniqueId().toString().endsWith(testIdsuffix)),

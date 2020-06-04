@@ -121,4 +121,19 @@ public class RunnerTest implements TestHelpers {
         verifyTestStartReported(nested2TestIdSuffix, listener);
         verifyTestSuccessReported(nested2TestIdSuffix, listener);
     }
+
+    @Test
+    void withTraitTestPassingTest() {
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.WithTraitTest");
+        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
+        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
+        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
+
+        verifyTestExecuteCode(1, () -> engine.execute(executionRequest));
+
+        String failingTestId = "[engine:scalatest]/[suite:tests.WithTraitTest]/[test:WithTraitTest runs]";
+
+        verifyTestStartReported(failingTestId, listener);
+        verifyTestSuccessReported(failingTestId, listener);
+    }
 }

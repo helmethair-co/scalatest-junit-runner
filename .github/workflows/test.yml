@@ -17,6 +17,10 @@ jobs:
         run: ./gradlew test --no-daemon
       - name: Grant execute permission for gradlew
         run: chmod +x scala-version-matrix/gradlew
+      - name: Run Gradle Example
+        run: ./gradle-example/gradlew clean test --no-daemon -p ./gradle-example
+      - name: Run Maven example
+        run: mvn clean test --file ./maven-example/pom.xml -B
       - name: Run scala matrix test with Gradle
         run: ./gradlew build --no-daemon && ./scala-version-matrix/gradlew clean test --no-daemon -PallScalaVersion -p ./scala-version-matrix
       - name: Upload coverage to Codecov
@@ -28,4 +32,4 @@ jobs:
           flags: unittests
           name: codecov-scalatest-junit-runner
           yml: ./codecov.yml
-          fail_ci_if_error: true
+          fail_ci_if_error: false
