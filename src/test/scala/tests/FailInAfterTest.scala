@@ -5,6 +5,7 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.funsuite.AnyFunSuite
 
 class FailInAfterTest extends AnyFunSuite with BeforeAndAfter with RegisterCall {
+
   after {
     register("after")
     /*
