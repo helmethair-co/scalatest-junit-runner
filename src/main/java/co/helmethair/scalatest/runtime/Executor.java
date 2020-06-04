@@ -9,17 +9,18 @@ import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.*;
-import org.scalatest.events.Event;
-import org.scalatest.events.Ordinal;
-import org.scalatest.events.RunAborted$;
+import org.scalatest.events.*;
+import org.scalatest.exceptions.TestCanceledException;
+import org.scalatest.exceptions.TestFailedException;
+import org.scalatest.tools.SuiteResult$;
 import scala.Option;
-import scala.Option$;
 import scala.util.control.NonFatal$;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static co.helmethair.scalatest.scala.OptionHelper.getOrElse;
 import static co.helmethair.scalatest.scala.ScalaConversions.*;
 
 public class Executor {
@@ -125,11 +126,14 @@ public class Executor {
             status.waitUntilCompleted();
         } catch (Throwable e) {
             if (e instanceof InstantiationException || e instanceof IllegalAccessException) {
-                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage())));
+                reporter.apply( suiteAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage()), scalasuite));
+            } else if (e instanceof TestFailedException ) {
+                reporter.apply( suiteAborted(args.tracker().nextOrdinal(),
+                        getOrElse(((TestFailedException) e).cause(),e), Resources.bigProblems(e), scalasuite));
             } else if (e instanceof NoClassDefFoundError) {
-                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotLoadClass(e.getMessage())));
+                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotLoadClass(e.getMessage()), scalasuite));
             } else {
-                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.bigProblems(e)));
+                reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.bigProblems(e), scalasuite));
                 if (!NonFatal$.MODULE$.apply(e)) {
                     throw e;
                 }
@@ -137,9 +141,28 @@ public class Executor {
         }
     }
 
-    private Event runAborted(Ordinal ordinal, Throwable e, String reason) {
-        return RunAborted$.MODULE$.apply(ordinal,
+    private Event runAborted(Ordinal ordinal, Throwable e, String reason, Suite scalasuite) {
+        return RunAborted$.MODULE$.apply(
+                ordinal,
                 reason,
+                Option.apply(e),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(null),
+                Option.apply(scalasuite),
+                Thread.currentThread().getName(),
+                (new Date()).getTime()
+        );
+    }
+
+    private Event suiteAborted(Ordinal ordinal, Throwable e, String message, Suite suite) {
+        return SuiteAborted$.MODULE$.apply(
+                ordinal,
+                message,
+                suite.suiteName(),
+                suite.suiteId(),
+                Option.apply(suite.getClass().getName()),
                 Option.apply(e),
                 Option.apply(null),
                 Option.apply(null),
