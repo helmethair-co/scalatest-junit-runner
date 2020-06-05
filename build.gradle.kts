@@ -1,3 +1,5 @@
+import java.util.Date as JDate
+
 plugins {
     java
     scala
@@ -6,14 +8,27 @@ plugins {
     jacoco
     id("com.adarshr.test-logger") version "2.0.0"
     id("io.wusa.semver-git-plugin") version "2.2.0"
+    id("com.jfrog.bintray") version "1.8.5"
 }
+
+val releaseVersion = semver.info.toString()
+val releaseDescription = "JUnit 5 Scalatest runner"
+val releaseDate = JDate().toString()
+val releaseArtifactName = "scalatest-junit-runner"
+val releaseGitPath = "github.com/helmethair-co/$releaseArtifactName"
+val releaseUrl = "https://$releaseGitPath"
+val releaseLabels = arrayOf("scala", "scalatest", "junit", "junit5", "test", "testing", "gradle", "maven")
+val releaseLicense = "MIT"
+val releaseVcsUrl = "$releaseUrl.git"
+val releaseIssuetrackerUrl = "$releaseUrl/issues"
+val releaseGroupId = "co.helmethair"
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 java.targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-    jcenter()
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -106,8 +121,8 @@ publishing {
     }
     publications {
         register("maven", MavenPublication::class) {
-            groupId = "co.helmethair"
-            artifactId = "scalatest-junit-runner"
+            groupId = releaseGroupId
+            artifactId = releaseArtifactName
             version = semver.info.toString()
             from(components["java"])
             artifact(sourceJar.get())
@@ -115,8 +130,8 @@ publishing {
 
             pom {
                 name.set("$groupId:$artifactId")
-                description.set("JUnit 5 Scalatest runner")
-                url.set("https://github.com/helmethair-co/scalatest-junit-runner")
+                description.set(releaseDescription)
+                url.set(releaseUrl)
                 licenses {
                     license {
                         name.set("MIT License")
@@ -132,21 +147,50 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/helmethair-co/scalatest-junit-runner.git")
+                    connection.set("scm:git:git://$releaseGitPath.git")
                     developerConnection.set("scm:git:ssh://github.com:helmethair-co/scalatest-junit-runner.git")
-                    url.set("https://github.com/helmethair-co/scalatest-junit-runner/tree/master")
+                    url.set("$releaseUrl/tree/master")
                 }
             }
         }
     }
+
+    project.extra["artifacts"] = arrayOf("maven")
+    project.version = semver.info
+    signing {
+        sign(publishing.publications["maven"])
+        val signingKeyId: String? by project
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    }
 }
 
-project.extra["artifacts"] = arrayOf("maven")
-project.version = semver.info
-signing {
-    sign(publishing.publications["maven"])
-    val signingKeyId: String? by project
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+bintray {
+    user = System.getenv("JCENTER_USER")
+    key = System.getenv("JCENTER_PASSWORD")
+    publish = false
+    override = false
+    setPublications("maven")
+    pkg.apply {
+        repo = releaseArtifactName
+        name = releaseArtifactName
+        userOrg = "helmethair"
+        setLicenses(releaseLicense)
+        vcsUrl = releaseVcsUrl
+        githubRepo = githubRepo
+        description = releaseDescription
+        setLabels(*releaseLabels)
+        desc = description
+        websiteUrl = releaseUrl
+        issueTrackerUrl = releaseIssuetrackerUrl
+        githubReleaseNotesFile = "$releaseUrl/blob/master/README.md"
+
+        version.apply {
+            name = releaseVersion
+            desc = releaseDescription
+            released = releaseDate
+            vcsTag = releaseVersion
+        }
+    }
 }
