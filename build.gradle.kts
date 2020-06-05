@@ -11,6 +11,20 @@ plugins {
     id("com.jfrog.bintray") version "1.8.5"
 }
 
+semver {
+    snapshotSuffix = "SNAPSHOT"
+    dirtyMarker = "dirty"
+    initialVersion = "0.1.4"
+    tagPrefix = "v"
+    branches {
+        branch {
+            regex = "master"
+            incrementer = "NO_VERSION_INCREMENTER"
+            formatter = Transformer { "${semver.info.version.major}.${semver.info.version.minor}.${semver.info.version.patch}_build.${semver.info.count}.sha.${semver.info.shortCommit}" }
+        }
+    }
+}
+
 val releaseVersion = semver.info.toString()
 val releaseDescription = "JUnit 5 Scalatest runner"
 val releaseDate = JDate().toString()
@@ -56,20 +70,6 @@ sourceSets {
         }
         java {
             setSrcDirs(emptyList<String>())
-        }
-    }
-}
-
-semver {
-    snapshotSuffix = "SNAPSHOT"
-    dirtyMarker = "dirty"
-    initialVersion = "0.1.4"
-    tagPrefix = "v"
-    branches {
-        branch {
-            regex = "master"
-            incrementer = "NO_VERSION_INCREMENTER"
-            formatter = Transformer { "${semver.info.version.major}.${semver.info.version.minor}.${semver.info.version.patch}_build.${semver.info.count}.sha.${semver.info.shortCommit}" }
         }
     }
 }
