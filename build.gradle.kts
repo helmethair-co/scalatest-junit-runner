@@ -25,11 +25,13 @@ semver {
     }
 }
 
-val releaseVersion = semver.info.toString()
+val releaseVersionInfo = semver.info
+val releaseVersion = releaseVersionInfo.toString()
 val releaseDescription = "JUnit 5 Scalatest runner"
 val releaseDate = JDate().toString()
 val releaseArtifactName = "scalatest-junit-runner"
-val releaseGitPath = "github.com/helmethair-co/$releaseArtifactName"
+val releaseRepoName = "helmethair-co/$releaseArtifactName"
+val releaseGitPath = "github.com/$releaseRepoName"
 val releaseUrl = "https://$releaseGitPath"
 val releaseLabels = arrayOf("scala", "scalatest", "junit", "junit5", "test", "testing", "gradle", "maven")
 val releaseLicense = "MIT"
@@ -112,7 +114,7 @@ publishing {
         maven {
             val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
             val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = uri(if (semver.info.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+            url = uri(if (releaseVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
             credentials {
                 username = System.getenv("NEXUS_USER")
                 password = System.getenv("NEXUS_PASSWORD")
@@ -123,7 +125,7 @@ publishing {
         register("maven", MavenPublication::class) {
             groupId = releaseGroupId
             artifactId = releaseArtifactName
-            version = semver.info.toString()
+            version = releaseVersion
             from(components["java"])
             artifact(sourceJar.get())
             artifact(stubJavaDocJar.get())
@@ -156,7 +158,7 @@ publishing {
     }
 
     project.extra["artifacts"] = arrayOf("maven")
-    project.version = semver.info
+    project.version = releaseVersion
     signing {
         sign(publishing.publications["maven"])
         val signingKeyId: String? by project
@@ -165,17 +167,16 @@ publishing {
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     }
 }
-
 bintray {
     user = System.getenv("JCENTER_USER")
     key = System.getenv("JCENTER_PASSWORD")
     publish = false
-    override = false
+    override = true
     setPublications("maven")
     pkg.apply {
-        repo = releaseArtifactName
-        name = releaseArtifactName
-        userOrg = "helmethair"
+        repo = "co.helmethair"
+        name = "$releaseGroupId:$releaseArtifactName"
+        userOrg = "gymora"
         setLicenses(releaseLicense)
         vcsUrl = releaseVcsUrl
         githubRepo = githubRepo
@@ -184,7 +185,7 @@ bintray {
         desc = description
         websiteUrl = releaseUrl
         issueTrackerUrl = releaseIssuetrackerUrl
-        githubReleaseNotesFile = "$releaseUrl/blob/master/README.md"
+        githubRepo = releaseRepoName
 
         version.apply {
             name = releaseVersion
