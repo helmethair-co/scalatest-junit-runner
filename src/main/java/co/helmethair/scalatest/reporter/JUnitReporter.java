@@ -7,10 +7,7 @@ import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.Reporter;
-import org.scalatest.Suite;
 import org.scalatest.events.*;
-import scala.Option;
-import scala.reflect.internal.Trees;
 
 import java.util.Collections;
 import java.util.Optional;
