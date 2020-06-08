@@ -11,12 +11,14 @@ public class ScalatestTestDescriptor extends ScalatestDescriptor {
     private final ScalatestSuiteDescriptor containingSuite;
     private final String testName;
     private final Set<TestTag> tags;
+    private final Optional<TestSource> source;
 
     public ScalatestTestDescriptor(ScalatestSuiteDescriptor containingSuite, String testName, Set<TestTag> tags) {
         super(testId(containingSuite.getSuiteId(), testName));
         this.containingSuite = containingSuite;
         this.testName = testName;
         this.tags = tags;
+        this.source = Optional.of( MethodSource.from(containingSuite.getSuiteId(), testName));
     }
 
     @Override
@@ -26,7 +28,7 @@ public class ScalatestTestDescriptor extends ScalatestDescriptor {
 
     @Override
     public Optional<TestSource> getSource() {
-        return Optional.of(MethodSource.from(containingSuite.getSuiteId(), testName));
+        return source;
     }
 
     @Override
