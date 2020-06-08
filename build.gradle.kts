@@ -120,6 +120,15 @@ publishing {
                 password = System.getenv("NEXUS_PASSWORD")
             }
         }
+        jcenter{
+            val releasesRepoUrl = "https://api.bintray.com/maven/helmethair/co.helmethair/co.helmethair:scalatest-junit-runner/"
+            val snapshotsRepoUrl = "https://oss.jfrog.org/artifactory/oss-snapshot-local/"
+            url = uri(if (releaseVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+            credentials {
+                username = System.getenv("JCENTER_USER")
+                password = System.getenv("JCENTER_PASSWORD")
+            }
+        }
     }
     publications {
         register("maven", MavenPublication::class) {
@@ -176,7 +185,7 @@ bintray {
     pkg.apply {
         repo = "co.helmethair"
         name = "$releaseGroupId:$releaseArtifactName"
-        userOrg = "gymora"
+        userOrg = "helmethair"
         setLicenses(releaseLicense)
         vcsUrl = releaseVcsUrl
         githubRepo = githubRepo
