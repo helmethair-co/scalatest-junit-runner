@@ -18,7 +18,7 @@ semver {
     tagPrefix = "v"
     branches {
         branch {
-            regex = "master"
+            regex = "main"
             incrementer = "NO_VERSION_INCREMENTER"
             formatter = Transformer { "${semver.info.version.major}.${semver.info.version.minor}.${semver.info.version.patch}_build.${semver.info.count}.sha.${semver.info.shortCommit}" }
         }
@@ -160,7 +160,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://$releaseGitPath.git")
                     developerConnection.set("scm:git:ssh://github.com:helmethair-co/scalatest-junit-runner.git")
-                    url.set("$releaseUrl/tree/master")
+                    url.set("$releaseUrl/tree/main")
                 }
             }
         }
