@@ -13,7 +13,7 @@ dependencies {
     testImplementation "org.scalatest:scalatest_2.12:3.2.0-M3"
     testRuntimeOnly "org.junit.platform:junit-platform-engine:1.6.0"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.6.0"
-    testRuntimeOnly "co.helmethair:scalatest-junit-runner:0.1.5"
+    testRuntimeOnly "co.helmethair:scalatest-junit-runner:0.1.6"
 }
 
 test {
