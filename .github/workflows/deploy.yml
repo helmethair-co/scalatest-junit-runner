@@ -25,6 +25,6 @@ jobs:
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
           JCENTER_USER: ${{ secrets.JCENTER_USER }}
           JCENTER_PASSWORD: ${{ secrets.JCENTER_PASSWORD }}
-        run: ./gradlew clean publishAllPublicationsToMavenRepository bintrayUpload --no-daemon -Dorg.gradle.internal.publish.checksums.insecure=true
+        run: ./gradlew clean publishAllPublicationsToMavenRepository  --no-daemon -Dorg.gradle.internal.publish.checksums.insecure=true
 
 
