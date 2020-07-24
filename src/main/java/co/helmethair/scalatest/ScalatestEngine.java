@@ -48,20 +48,10 @@ public class ScalatestEngine implements TestEngine {
     @SuppressWarnings("unchecked")
     private List<Class<? extends Suite>> discoverClassSelectors(EngineDiscoveryRequest dicoveryRequest) {
         return dicoveryRequest.getSelectorsByType(ClassSelector.class).stream().map(ClassSelector::getJavaClass)
-                .filter(c -> !(willThowMalformedException(c)
-                        || c.isAnonymousClass()
-                        || c.isLocalClass()
+                .filter(c -> !(c.getEnclosingMethod() != null //only local or anonymous classes have an enclosing method
                         || c.isSynthetic()
                         || Modifier.isAbstract(c.getModifiers()))
                         && Suite.class.isAssignableFrom(c)
                 ).map(c -> ((Class<? extends Suite>) c)).collect(Collectors.toList());
-    }
-
-    private boolean willThowMalformedException(Class<?> c) {
-        Class<?> enclosingClass = c.getEnclosingClass();
-        if (enclosingClass == null) return false;
-        String binaryName = c.getName().substring(enclosingClass.getName().length());
-        int length = binaryName.length();
-        return length < 1 || binaryName.charAt(0) != '$';
     }
 }
