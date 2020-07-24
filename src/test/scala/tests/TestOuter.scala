@@ -9,9 +9,9 @@ object TestOuter {
 
     case class CaseClass(a: String)
 
-    class NotCase() extends AnyFunSpec with RegisterCall{
+    class NotCase() extends AnyFunSpec with RegisterCall {
 
-    describe("NotCase") {
+      describe("NotCase") {
         it("runs") {
           register()
         }
@@ -19,4 +19,5 @@ object TestOuter {
     }
 
   }
+
 }

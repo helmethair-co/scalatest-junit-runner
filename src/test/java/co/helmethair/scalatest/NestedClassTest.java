@@ -20,6 +20,4 @@ class NestedClassTest implements TestHelpers {
 
         verifyTestExecuteCode(1, () -> engine.execute(executionRequest));
     }
-
-
 }
