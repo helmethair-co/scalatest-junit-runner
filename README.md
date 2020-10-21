@@ -50,7 +50,7 @@ dependencies {
     testRuntime "co.helmethair:scalatest-junit-runner:0.1.6"
 }
 
-test{
+test {
     useJUnitPlatform {
         includeEngines 'scalatest'
         testLogging {
