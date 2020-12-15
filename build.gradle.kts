@@ -7,7 +7,7 @@ plugins {
     signing
     jacoco
     id("com.adarshr.test-logger") version "2.0.0"
-    id("io.wusa.semver-git-plugin") version "2.2.0"
+    id("io.wusa.semver-git-plugin") version "2.3.7"
     id("com.jfrog.bintray") version "1.8.5"
 }
 
