@@ -7,6 +7,7 @@ import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.Reporter;
+import org.scalatest.Suite;
 import org.scalatest.events.*;
 
 import java.util.Collections;
@@ -50,8 +51,16 @@ public class JUnitReporter implements Reporter {
                     descriptor,
                     TestExecutionResult.failed(cause));
         } else if (event instanceof RunAborted) {
-            junitListener.executionFinished(rootTestDescriptor,
-                    TestExecutionResult.aborted(getOrElse(((RunAborted) event).throwable(), null)));
+            RunAborted e = (RunAborted) event;
+            Throwable ex = getOrElse(e.throwable(), null);
+            TestDescriptor testDescriptor = rootTestDescriptor;
+            Object payload = e.payload().getOrElse(null);
+            if (payload != null && payload instanceof Suite) {
+                Suite s = (Suite) payload;
+                testDescriptor = getOrCreateDescriptor(s.suiteId(), s.suiteName(), null);
+            }
+            junitListener.executionFinished(testDescriptor,
+                    TestExecutionResult.failed(ex)); // tests reported as "aborted" does not fail the build
         } else if (event instanceof SuiteStarting) {
             SuiteStarting e = (SuiteStarting) event;
             junitListener.executionStarted(

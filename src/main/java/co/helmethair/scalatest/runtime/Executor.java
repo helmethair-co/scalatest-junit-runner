@@ -9,10 +9,11 @@ import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.scalatest.*;
-import org.scalatest.events.*;
-import org.scalatest.exceptions.TestCanceledException;
+import org.scalatest.events.Event;
+import org.scalatest.events.Ordinal;
+import org.scalatest.events.RunAborted$;
+import org.scalatest.events.SuiteAborted$;
 import org.scalatest.exceptions.TestFailedException;
-import org.scalatest.tools.SuiteResult$;
 import scala.Option;
 import scala.util.control.NonFatal$;
 
@@ -126,10 +127,10 @@ public class Executor {
             status.waitUntilCompleted();
         } catch (Throwable e) {
             if (e instanceof InstantiationException || e instanceof IllegalAccessException) {
-                reporter.apply( suiteAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage()), scalasuite));
-            } else if (e instanceof TestFailedException ) {
-                reporter.apply( suiteAborted(args.tracker().nextOrdinal(),
-                        getOrElse(((TestFailedException) e).cause(),e), Resources.bigProblems(e), scalasuite));
+                reporter.apply(suiteAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage()), scalasuite));
+            } else if (e instanceof TestFailedException) {
+                reporter.apply(suiteAborted(args.tracker().nextOrdinal(),
+                        getOrElse(((TestFailedException) e).cause(), e), Resources.bigProblems(e), scalasuite));
             } else if (e instanceof NoClassDefFoundError) {
                 reporter.apply(runAborted(args.tracker().nextOrdinal(), e, Resources.cannotLoadClass(e.getMessage()), scalasuite));
             } else {
