@@ -6,6 +6,7 @@ import co.helmethair.scalatest.runtime.Discovery;
 import co.helmethair.scalatest.runtime.Executor;
 import org.junit.platform.engine.*;
 import org.junit.platform.engine.discovery.ClassSelector;
+import org.scalatest.DoNotDiscover;
 import org.scalatest.Suite;
 
 import java.lang.reflect.Modifier;
@@ -47,11 +48,12 @@ public class ScalatestEngine implements TestEngine {
 
     @SuppressWarnings("unchecked")
     private List<Class<? extends Suite>> discoverClassSelectors(EngineDiscoveryRequest dicoveryRequest) {
-        return dicoveryRequest.getSelectorsByType(ClassSelector.class).stream().filter(c -> !(c.getJavaClass().isAnonymousClass()
-                || c.getJavaClass().isLocalClass()
-                || c.getJavaClass().isSynthetic()
-                || Modifier.isAbstract(c.getJavaClass().getModifiers()))
-                && Suite.class.isAssignableFrom(c.getJavaClass())
-        ).map(c -> ((Class<? extends Suite>) c.getJavaClass())).collect(Collectors.toList());
+        return dicoveryRequest.getSelectorsByType(ClassSelector.class).stream().map(ClassSelector::getJavaClass)
+                .filter(c -> !(c.getEnclosingMethod() != null //only local or anonymous classes have an enclosing method
+                        || c.isSynthetic()
+                        || Modifier.isAbstract(c.getModifiers())
+                        || c.getAnnotation(DoNotDiscover.class) != null)
+                        && Suite.class.isAssignableFrom(c)
+                ).map(c -> ((Class<? extends Suite>) c)).collect(Collectors.toList());
     }
 }

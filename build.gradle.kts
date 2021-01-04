@@ -18,7 +18,7 @@ semver {
     tagPrefix = "v"
     branches {
         branch {
-            regex = "master"
+            regex = "main"
             incrementer = "NO_VERSION_INCREMENTER"
             formatter = Transformer { "${semver.info.version.major}.${semver.info.version.minor}.${semver.info.version.patch}_build.${semver.info.count}.sha.${semver.info.shortCommit}" }
         }
@@ -52,13 +52,13 @@ dependencies {
     val junitJupiterVersion = "5.6.0"
 
     compileOnly("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
-    compileOnly("org.scalatest:scalatest_2.11:3.0.7")
+    compileOnly("org.scalatest:scalatest_2.11:3.2.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("org.junit.platform:junit-platform-engine:1.6.0")
-    testImplementation("org.scalatest:scalatest_2.11:3.1.1")
+    testImplementation("org.scalatest:scalatest_2.11:3.2.0")
     testImplementation("org.scala-lang:scala-library:2.11.12")
     testImplementation("org.mockito:mockito-core:2.7.22")
 }
@@ -160,7 +160,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://$releaseGitPath.git")
                     developerConnection.set("scm:git:ssh://github.com:helmethair-co/scalatest-junit-runner.git")
-                    url.set("$releaseUrl/tree/master")
+                    url.set("$releaseUrl/tree/main")
                 }
             }
         }

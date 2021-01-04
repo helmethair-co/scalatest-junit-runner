@@ -71,21 +71,6 @@ public class RunnerTest implements TestHelpers {
     }
 
     @Test
-    void funSpecPassingTest() {
-        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.FunSpecTest");
-        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
-        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
-        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
-
-        verifyTestExecuteCode(1, () -> engine.execute(executionRequest));
-
-        String failingTestId = "[engine:scalatest]/[suite:tests.FunSpecTest]/[test:FunspecTest runs]";
-
-        verifyTestStartReported(failingTestId, listener);
-        verifyTestSuccessReported(failingTestId, listener);
-    }
-
-    @Test
     void anyFunSpecPassingTest() {
         EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.AnyFunSpecTest");
         TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);

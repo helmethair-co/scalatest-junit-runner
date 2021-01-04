@@ -1,6 +1,6 @@
 # ScalaTest Junit 5 runner
-[![Tests](https://github.com/helmethair-co/scalatest-junit-runner/workflows/Test/badge.svg)](https://github.com/helmethair-co/scalatest-junit-runner/actions?query=workflow%3A%22Test%22+branch%3Amaster+event%3Apush)
-[![codecov](https://codecov.io/gh/helmethair-co/scalatest-junit-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/helmethair-co/scalatest-junit-runner)
+[![Tests](https://github.com/helmethair-co/scalatest-junit-runner/workflows/Test/badge.svg)](https://github.com/helmethair-co/scalatest-junit-runner/actions?query=workflow%3A%22Test%22+branch%3Amain+event%3Apush)
+[![codecov](https://codecov.io/gh/helmethair-co/scalatest-junit-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/helmethair-co/scalatest-junit-runner)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner)
 [![Bintray](https://img.shields.io/bintray/v/gymora/co.helmethair/co.helmethair:scalatest-junit-runner?maxAge=50000)](https://bintray.com/gymora/co.helmethair/co.helmethair:scalatest-junit-runner/_latestVersion)
 
@@ -50,7 +50,7 @@ dependencies {
     testRuntime "co.helmethair:scalatest-junit-runner:0.1.6"
 }
 
-test{
+test {
     useJUnitPlatform {
         includeEngines 'scalatest'
         testLogging {
@@ -60,7 +60,7 @@ test{
 }
 ```
 
-See [example gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/gradle-example)
+See [example gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/main/gradle-example)
 
 ### Maven
 
@@ -117,7 +117,7 @@ pom.xml
 
 ```
 
-See [example maven project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/maven-example)
+See [example maven project](https://github.com/helmethair-co/scalatest-junit-runner/tree/main/maven-example)
 
 ### JUnit console
 
