@@ -143,11 +143,19 @@ public interface TestHelpers {
     }
 
     default void verifyTestFailReportedWith(String testIdsuffix, TestEngineExecutionListener listener, Class<? extends Throwable> cause) {
+        verifyTestStatusReportedWith(testIdsuffix, listener, cause, TestExecutionResult.Status.FAILED);
+    }
+
+    default void verifyTestStatusReported(String testIdsuffix, TestEngineExecutionListener listener, TestExecutionResult.Status status) {
+        verifyTestStatusReportedWith(testIdsuffix, listener, null, status);
+    }
+
+    default void verifyTestStatusReportedWith(String testIdsuffix, TestEngineExecutionListener listener, Class<? extends Throwable> cause, TestExecutionResult.Status status) {
         verify(listener, atLeastOnce()).executionFinished(
                 argThat(a -> a.getUniqueId().toString().endsWith(testIdsuffix)),
                 argThat(a -> a.getThrowable().isPresent()
                         && (cause == null || cause.isInstance(a.getThrowable().get()))
-                        && a.getStatus() == TestExecutionResult.Status.FAILED
+                        && a.getStatus() == status
                 )
         );
     }
