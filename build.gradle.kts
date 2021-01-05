@@ -52,7 +52,7 @@ dependencies {
     val junitJupiterVersion = "5.7.0"
 
     compileOnly("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
-    compileOnly("org.scalatest:scalatest_2.11:3.2.0")
+    compileOnly("org.scalatest:scalatest_2.11:3.3.0-SNAP3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
