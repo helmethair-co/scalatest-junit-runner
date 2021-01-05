@@ -6,7 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class FailInAfterAllTest extends AnyFunSuite with BeforeAndAfterAll with RegisterCall {
 
-  override def afterAll() {
+  override def afterAll():Unit = {
     register("after")
     fail()
   }
