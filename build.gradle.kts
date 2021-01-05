@@ -59,7 +59,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("org.junit.platform:junit-platform-engine:1.6.0")
     testImplementation("org.scalatest:scalatest_2.11:3.2.0")
-    testImplementation("org.scala-lang:scala-library:2.11.12")
+    testImplementation("org.scala-lang:scala-library:2.13.4")
     testImplementation("org.mockito:mockito-core:3.7.0")
 }
 
