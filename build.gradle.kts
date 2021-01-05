@@ -49,7 +49,7 @@ repositories {
 
 dependencies {
     val junitPlatformVersion = "1.6.0"
-    val junitJupiterVersion = "5.6.0"
+    val junitJupiterVersion = "5.7.0"
 
     compileOnly("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
     compileOnly("org.scalatest:scalatest_2.11:3.2.0")
