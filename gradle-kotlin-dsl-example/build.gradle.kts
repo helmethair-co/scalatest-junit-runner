@@ -17,11 +17,13 @@ dependencies {
     testRuntimeOnly("co.helmethair:scalatest-junit-runner:0.1.8")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform {
-        includeEngines("scalatest")
-        testLogging {
-            events("passed", "skipped", "failed")
+tasks {
+    test{
+        useJUnitPlatform {
+            includeEngines("scalatest")
+            testLogging {
+                events("passed", "skipped", "failed")
+            }
         }
     }
 }

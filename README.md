@@ -67,11 +67,13 @@ See [example Groovy Gradle project](https://github.com/helmethair-co/scalatest-j
 build.gradle.kts
 ```kotlin
 ...
-tasks.withType<Test> {
-    useJUnitPlatform {
-        includeEngines("scalatest")
-        testLogging {
-            events("passed", "skipped", "failed")
+tasks {
+    test{
+        useJUnitPlatform {
+            includeEngines("scalatest")
+            testLogging {
+                events("passed", "skipped", "failed")
+            }
         }
     }
 }
