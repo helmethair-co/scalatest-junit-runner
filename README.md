@@ -24,6 +24,7 @@ version >= 4.5
 This library allows to run scalatest on the new JUnit Platform (JUnit 5) 
 To run Scalatest on the old JUnit Vintage (JUnit 4) platform use the [gradle-scalatest](https://plugins.gradle.org/plugin/com.github.maiflai.scalatest) Gradle plugin.
 
+#### Groovy
 gradle.properties
 ```properties
 scala_lib_version=2.12
@@ -47,7 +48,7 @@ dependencies {
     testImplementation "org.scalatest:scalatest_$scala_lib_version:3.2.0-M3"
     testRuntime "org.junit.platform:junit-platform-engine:$junit_platform_version"
     testRuntime "org.junit.platform:junit-platform-launcher:$junit_platform_version"
-    testRuntime "co.helmethair:scalatest-junit-runner:0.1.6"
+    testRuntime "co.helmethair:scalatest-junit-runner:0.1.8"
 }
 
 test {
@@ -60,7 +61,25 @@ test {
 }
 ```
 
-See [example gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/main/gradle-example)
+See [example Groovy Gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/gradle-example)
+
+#### Kotlin DSL
+build.gradle.kts
+```kotlin
+...
+tasks {
+    test{
+        useJUnitPlatform {
+            includeEngines("scalatest")
+            testLogging {
+                events("passed", "skipped", "failed")
+            }
+        }
+    }
+}
+```
+
+See [example Kotlin DSL Gradle project](https://github.com/helmethair-co/scalatest-junit-runner/tree/master/gradle-kotlin-dsl-example)
 
 ### Maven
 
