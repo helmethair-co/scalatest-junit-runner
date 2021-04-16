@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
     signing
     jacoco
-    id("com.adarshr.test-logger") version "2.1.1"
+    id("com.adarshr.test-logger") version "3.0.0"
     id("io.wusa.semver-git-plugin") version "2.3.7"
     id("com.jfrog.bintray") version "1.8.5"
 }
