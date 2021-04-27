@@ -74,25 +74,29 @@ public class Executor {
         List<ScalatestTestDescriptor> tests = children.stream().filter(c -> c instanceof ScalatestTestDescriptor)
                 .map(c -> (ScalatestTestDescriptor) c).collect(Collectors.toList());
 
-        Set<TestDescriptor> nonTests = new HashSet<>(children);
-        nonTests.removeAll(tests);
+        Set<TestDescriptor> subSuites = new HashSet<>(children);
+        subSuites.removeAll(tests);
 
+        subSuites.stream()
+                .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
+                .forEach(c -> executeTest(c, reporter));
+
+        boolean suitExecutedOk = true;
         if (!tests.isEmpty()) {
-            runScalatests((ScalatestSuiteDescriptor) test,
+            suitExecutedOk = runScalatests((ScalatestSuiteDescriptor) test,
                     tests.stream()
                             .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
                             .collect(Collectors.toList()),
                     reporter);
         }
 
-        nonTests.stream()
-                .sorted(Comparator.comparing(TestDescriptor::getDisplayName))
-                .forEach(c -> executeTest(c, reporter));
-
-        reporter.getJunitListener().executionFinished(test, TestExecutionResult.successful());
+        if (suitExecutedOk){
+            // if exception is thrown during suit execution (init, before/after all) we should not report a SUCCESS
+            reporter.getJunitListener().executionFinished(test, TestExecutionResult.successful());
+        }
     }
 
-    private void runScalatests(ScalatestSuiteDescriptor containingSuite, List<ScalatestTestDescriptor> tests, JUnitReporter reporter) {
+    private boolean runScalatests(ScalatestSuiteDescriptor containingSuite, List<ScalatestTestDescriptor> tests, JUnitReporter reporter) {
 
         Suite scalasuite = containingSuite.getScalasuite();
 
@@ -125,6 +129,7 @@ public class Executor {
         try {
             Status status = scalasuite.run(Option.apply(null), args);
             status.waitUntilCompleted();
+            return true;
         } catch (Throwable e) {
             if (e instanceof InstantiationException || e instanceof IllegalAccessException) {
                 reporter.apply(suiteAborted(args.tracker().nextOrdinal(), e, Resources.cannotInstantiateSuite(e.getMessage()), scalasuite));
@@ -139,6 +144,7 @@ public class Executor {
                     throw e;
                 }
             }
+            return false;
         }
     }
 

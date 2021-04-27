@@ -117,4 +117,22 @@ public class BeforeAfterTest implements TestHelpers {
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]/[test:test 2]", listener);
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInAfterAllTest]", listener, null);
     }
+
+    @Test
+    void beforeAllThrowsExceptionTest() {
+        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.ExceptionBeforeAllTest");
+        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
+        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
+        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
+
+        Map<String, Integer> calls = new HashMap<String, Integer>() {{
+            put("beforeAll begin", 1);
+            put("afterEach", 0);
+            put("runs", 0);
+            put("runs again", 0);
+        }};
+
+        verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
+        verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.ExceptionBeforeAllTest]", listener, null);
+    }
 }
