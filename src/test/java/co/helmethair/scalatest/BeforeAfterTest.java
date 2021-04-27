@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.EngineDiscoveryRequest;
 import org.junit.platform.engine.ExecutionRequest;
 import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.TestExecutionResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class BeforeAfterTest implements TestHelpers {
         verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
 
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInBeforeTest]", listener, null);
+        verifyTestSuccessNotReported("[engine:scalatest]/[suite:tests.FailInBeforeTest]", listener);
     }
 
     @Test
@@ -78,6 +80,7 @@ public class BeforeAfterTest implements TestHelpers {
 
         verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInBeforeAllTest]", listener, null);
+        verifyTestSuccessNotReported("[engine:scalatest]/[suite:tests.FailInBeforeAllTest]", listener);
     }
 
     @Test
@@ -96,6 +99,7 @@ public class BeforeAfterTest implements TestHelpers {
 
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterTest]/[test:test]", listener);
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInAfterTest]", listener, null);
+        verifyTestSuccessNotReported("[engine:scalatest]/[suite:tests.FailInAfterTest]", listener);
     }
 
     @Test
@@ -116,23 +120,6 @@ public class BeforeAfterTest implements TestHelpers {
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]/[test:test 1]", listener);
         verifyTestSuccessReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]/[test:test 2]", listener);
         verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.FailInAfterAllTest]", listener, null);
-    }
-
-    @Test
-    void beforeAllThrowsExceptionTest() {
-        EngineDiscoveryRequest discoveryRequest = createClassDiscoveryRequest("tests.ExceptionBeforeAllTest");
-        TestDescriptor discoveredTests = engine.discover(discoveryRequest, engineId);
-        TestEngineExecutionListener listener = spy(new TestEngineExecutionListener());
-        ExecutionRequest executionRequest = new ExecutionRequest(discoveredTests, listener, null);
-
-        Map<String, Integer> calls = new HashMap<String, Integer>() {{
-            put("beforeAll begin", 1);
-            put("afterEach", 0);
-            put("runs", 0);
-            put("runs again", 0);
-        }};
-
-        verifyTestExecuteCode(calls, () -> engine.execute(executionRequest));
-        verifyTestFailReportedWith("[engine:scalatest]/[suite:tests.ExceptionBeforeAllTest]", listener, null);
+        verifyTestSuccessNotReported("[engine:scalatest]/[suite:tests.FailInAfterAllTest]", listener);
     }
 }

@@ -186,6 +186,15 @@ public interface TestHelpers {
         );
     }
 
+    default void verifyTestSuccessNotReported(String testIdsuffix, TestEngineExecutionListener listener) {
+        verify(listener, never()).executionFinished(
+                argThat(a -> a.getUniqueId().toString().endsWith(testIdsuffix)),
+                argThat(a -> !a.getThrowable().isPresent()
+                        && a.getStatus() == TestExecutionResult.Status.SUCCESSFUL
+                )
+        );
+    }
+
     default void verifyTestSuccessReported(String testIdsuffix, TestExecutionListener listener) {
         verify(listener, atLeastOnce()).executionFinished(
                 argThat(a -> a.getUniqueId().endsWith(testIdsuffix)),
