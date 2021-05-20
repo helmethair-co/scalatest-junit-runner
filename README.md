@@ -2,8 +2,6 @@
 [![Tests](https://github.com/helmethair-co/scalatest-junit-runner/workflows/Test/badge.svg)](https://github.com/helmethair-co/scalatest-junit-runner/actions?query=workflow%3A%22Test%22+branch%3Amain+event%3Apush)
 [![codecov](https://codecov.io/gh/helmethair-co/scalatest-junit-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/helmethair-co/scalatest-junit-runner)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner)
-[![Bintray](https://img.shields.io/bintray/v/gymora/co.helmethair/co.helmethair:scalatest-junit-runner?maxAge=50000)](https://bintray.com/gymora/co.helmethair/co.helmethair:scalatest-junit-runner/_latestVersion)
-
 
 [JUnit 5](https://junit.org/junit5/docs/current/user-guide/) runner library for [ScalaTest](http://www.scalatest.org/) tests. It can be used to fully [integrate Scalatest into Gradle](https://www.baeldung.com/junit-5-gradle) (version >= 4.5) and to Maven.
 
