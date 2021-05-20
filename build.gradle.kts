@@ -8,7 +8,6 @@ plugins {
     jacoco
     id("com.adarshr.test-logger") version "3.0.0"
     id("io.wusa.semver-git-plugin") version "2.3.7"
-    id("com.jfrog.bintray") version "1.8.5"
 }
 
 semver {
@@ -44,7 +43,6 @@ java.targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -123,15 +121,6 @@ publishing {
                 password = System.getenv("NEXUS_PASSWORD")
             }
         }
-        jcenter{
-            val releasesRepoUrl = "https://api.bintray.com/maven/helmethair/co.helmethair/co.helmethair:scalatest-junit-runner/"
-            val snapshotsRepoUrl = "https://oss.jfrog.org/artifactory/oss-snapshot-local/"
-            url = uri(if (releaseVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-            credentials {
-                username = System.getenv("JCENTER_USER")
-                password = System.getenv("JCENTER_PASSWORD")
-            }
-        }
     }
     publications {
         register("maven", MavenPublication::class) {
@@ -177,33 +166,5 @@ publishing {
         val signingKey: String? by project
         val signingPassword: String? by project
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-    }
-}
-bintray {
-    user = System.getenv("JCENTER_USER")
-    key = System.getenv("JCENTER_PASSWORD")
-    publish = false
-    override = true
-    setPublications("maven")
-    pkg.apply {
-        repo = "co.helmethair"
-        name = "$releaseGroupId:$releaseArtifactName"
-        userOrg = "helmethair"
-        setLicenses(releaseLicense)
-        vcsUrl = releaseVcsUrl
-        githubRepo = githubRepo
-        description = releaseDescription
-        setLabels(*releaseLabels)
-        desc = description
-        websiteUrl = releaseUrl
-        issueTrackerUrl = releaseIssuetrackerUrl
-        githubRepo = releaseRepoName
-
-        version.apply {
-            name = releaseVersion
-            desc = releaseDescription
-            released = releaseDate
-            vcsTag = releaseVersion
-        }
     }
 }
