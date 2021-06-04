@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     val junitPlatformVersion = "1.6.0"
-    val junitJupiterVersion = "5.7.1"
+    val junitJupiterVersion = "5.7.2"
 
     val testScalaLibraryVersion = "2.13"
     val testScalaVersion = "$testScalaLibraryVersion.4"
@@ -61,7 +61,7 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-engine:1.6.0")
     testImplementation("org.scalatest:scalatest_$testScalaLibraryVersion:3.3.0-SNAP3")
     testImplementation("org.scala-lang:scala-library:$testScalaVersion")
-    testImplementation("org.mockito:mockito-core:3.9.0")
+    testImplementation("org.mockito:mockito-core:3.10.0")
 }
 
 sourceSets {
