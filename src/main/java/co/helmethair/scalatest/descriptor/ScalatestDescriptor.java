@@ -16,6 +16,7 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
     private final UniqueId id;
     private TestDescriptor parentDescriptor = null;
     private Set<TestDescriptor> childDescriptors = new HashSet<TestDescriptor>();
+    protected Set<TestTag> tags = new HashSet<>();
 
     protected ScalatestDescriptor(UniqueId id) {
         this.id = id;
@@ -75,7 +76,7 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
 
     @Override
     public Set<TestTag> getTags() {
-        return new HashSet<>();
+        return tags;
     }
 
     @Override
