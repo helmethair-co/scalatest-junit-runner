@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.EngineDiscoveryRequest;
 import org.junit.platform.engine.ExecutionRequest;
 import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.launcher.TestExecutionListener;
+
+import java.util.Arrays;
 
 import static org.mockito.Mockito.spy;
 
@@ -21,6 +24,18 @@ public class ClassInitializationErrorTest implements TestHelpers {
 
         String testId = "[engine:scalatest]/[failed:tests.InitErrorTest]";
 
+        verifyTestStartReported(testId, listener);
+        verifyTestFailReported(testId, listener);
+    }
+
+    @Test
+    void failedToInitializeTaggedClass() {
+        TestExecutionListener listener = spy(new TestExecutionListener() {
+        });
+
+        launch(Arrays.asList("tests.InitErrorTaggedTest"), Arrays.asList("co.helmethair.scalatest.SuitLevelTag"), Arrays.asList(), listener);
+
+        String testId = "[engine:scalatest]/[failed:tests.InitErrorTaggedTest]";
         verifyTestStartReported(testId, listener);
         verifyTestFailReported(testId, listener);
     }
