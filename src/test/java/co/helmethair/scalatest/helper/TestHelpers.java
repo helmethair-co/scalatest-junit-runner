@@ -128,6 +128,10 @@ public interface TestHelpers {
         verifyTestStartReported(testIdSuffix, listener, atLeastOnce());
     }
 
+    default void verifyTestFailReported(String testIdSuffix, TestExecutionListener listener) {
+        verifyTestFailReported(testIdSuffix, listener, atLeastOnce());
+    }
+
     default void verifyTestStartNotReported(String testIdSuffix, TestExecutionListener listener) {
         verifyTestStartReported(testIdSuffix, listener, never());
     }
@@ -136,6 +140,11 @@ public interface TestHelpers {
         verify(listener, mode).executionStarted(
                 argThat(a -> a.getUniqueId().endsWith(testIdSuffix))
         );
+    }
+
+    default void verifyTestFailReported(String testIdSuffix, TestExecutionListener listener, VerificationMode mode) {
+        verify(listener, mode).executionFinished(
+                argThat(a -> a.getUniqueId().endsWith(testIdSuffix)), argThat(a -> a.getStatus() == TestExecutionResult.Status.FAILED));
     }
 
     default void verifyTestFailReported(String testIdsuffix, TestEngineExecutionListener listener) {
