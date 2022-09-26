@@ -26,7 +26,12 @@ public interface TestHelpers {
     }
 
     default ConfigurationParameters configurationParametersOf(Map<String, Object> configParams) {
-        return new ConfigurationParameters() {
+        return new ConfigurationParameters() {            
+            @Override
+            public Set<String> keySet() {
+                return configParams.keySet();
+            }
+
             @Override
             public Optional<String> get(String key) {
                 return Optional.ofNullable(configParams.get(key).toString());
