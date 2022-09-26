@@ -18,7 +18,7 @@ public class ScalatestTestDescriptor extends ScalatestDescriptor {
         this.containingSuite = containingSuite;
         this.testName = testName;
         this.tags = tags;
-        this.source = Optional.of( MethodSource.from(containingSuite.getSuiteId(), testName));
+        this.source = Optional.of( MethodSource.from(containingSuite.getSuiteId(), testName, ""));
     }
 
     @Override
