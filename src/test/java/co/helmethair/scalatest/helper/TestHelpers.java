@@ -57,7 +57,7 @@ public interface TestHelpers {
                 if (selectorType == ClassSelector.class) {
                     return ((List<T>) Arrays.stream(classNames).map(DiscoverySelectors::selectClass).collect(Collectors.toList()));
                 }
-                return null;
+                return Collections.emptyList();
             }
 
             @Override

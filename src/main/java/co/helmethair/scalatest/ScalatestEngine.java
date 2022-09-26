@@ -4,15 +4,21 @@ import co.helmethair.scalatest.descriptor.ScalatestEngineDescriptor;
 import co.helmethair.scalatest.reporter.JUnitReporter;
 import co.helmethair.scalatest.runtime.Discovery;
 import co.helmethair.scalatest.runtime.Executor;
-import org.junit.platform.engine.*;
+import org.junit.platform.engine.ConfigurationParameters;
+import org.junit.platform.engine.EngineDiscoveryRequest;
+import org.junit.platform.engine.ExecutionRequest;
+import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.discovery.ClassSelector;
-import org.scalatest.DoNotDiscover;
-import org.scalatest.Suite;
+import org.junit.platform.engine.discovery.UniqueIdSelector;
 
-import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static co.helmethair.scalatest.descriptor.ScalatestDescriptor.SUITE_TYPE;
 
 public class ScalatestEngine implements TestEngine {
     public static final String ID = "scalatest";
@@ -29,9 +35,12 @@ public class ScalatestEngine implements TestEngine {
     public TestDescriptor discover(EngineDiscoveryRequest discoveryRequest, UniqueId uniqueId) {
         ScalatestEngineDescriptor engineDescriptor = new ScalatestEngineDescriptor(uniqueId, ID);
 
-        List<Class<? extends Suite>> classes = discoverClassSelectors(discoveryRequest);
-
-        return runtime.discover(engineDescriptor, classes, Thread.currentThread().getContextClassLoader());
+        return runtime.discover(engineDescriptor,
+            Stream.concat(
+                discoverClassSelectors(discoveryRequest).stream(),
+                discoverUniqueIdSelectors(discoveryRequest).stream()
+            ).collect(Collectors.toSet()),
+            Thread.currentThread().getContextClassLoader());
     }
 
     @Override
@@ -46,14 +55,28 @@ public class ScalatestEngine implements TestEngine {
         executor.executeTest(executionRequest.getRootTestDescriptor(), reporter);
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Class<? extends Suite>> discoverClassSelectors(EngineDiscoveryRequest dicoveryRequest) {
-        return dicoveryRequest.getSelectorsByType(ClassSelector.class).stream().map(ClassSelector::getJavaClass)
-                .filter(c -> !(c.getEnclosingMethod() != null //only local or anonymous classes have an enclosing method
-                        || c.isSynthetic()
-                        || Modifier.isAbstract(c.getModifiers())
-                        || c.getAnnotation(DoNotDiscover.class) != null)
-                        && Suite.class.isAssignableFrom(c)
-                ).map(c -> ((Class<? extends Suite>) c)).collect(Collectors.toList());
+    private List<String> discoverUniqueIdSelectors(EngineDiscoveryRequest discoveryRequest) {
+        return discoveryRequest.getSelectorsByType(UniqueIdSelector.class).stream()
+            .map(this::getSuite)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
+    }
+
+    private Optional<String> getSuite(UniqueIdSelector u) {
+        UniqueId uniqueId = u.getUniqueId();
+        if (uniqueId.hasPrefix(UniqueId.forEngine(ID))) {
+            UniqueId.Segment segment = uniqueId.getSegments().get(1);
+            if (SUITE_TYPE.equals(segment.getType())) {
+                return Optional.of(segment.getValue());
+            }
+        }
+        return Optional.empty();
+    }
+
+    private List<String> discoverClassSelectors(EngineDiscoveryRequest discoveryRequest) {
+        return discoveryRequest.getSelectorsByType(ClassSelector.class).stream()
+            .map(ClassSelector::getClassName)
+            .collect(Collectors.toList());
     }
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class ScalatestDescriptor implements TestDescriptor {
     final static UniqueId ENGINE_ID = UniqueId.forEngine(ScalatestEngine.ID);
     static final ConcurrentHashMap<UniqueId, ScalatestDescriptor> descriptorsById = new ConcurrentHashMap<>();
+    public static final String SUITE_TYPE = "suite";
     private final UniqueId id;
     private TestDescriptor parentDescriptor = null;
     private Set<TestDescriptor> childDescriptors = new HashSet<TestDescriptor>();
@@ -32,11 +33,11 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
     }
 
     static UniqueId testId(String suiteId, String testName) {
-        return ENGINE_ID.append("suite", suiteId).append("test", testName);
+        return ENGINE_ID.append(SUITE_TYPE, suiteId).append("test", testName);
     }
 
     static UniqueId containerId(String suiteId) {
-        return ENGINE_ID.append("suite", suiteId);
+        return ENGINE_ID.append(SUITE_TYPE, suiteId);
     }
 
     static UniqueId descriptorId(String suiteId, String testName) {
