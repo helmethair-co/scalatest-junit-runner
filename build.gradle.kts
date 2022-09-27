@@ -56,8 +56,10 @@ dependencies {
     compileOnly("org.scalatest:scalatest_2.11:3.3.0-SNAP3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testImplementation("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testImplementation("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
+    testImplementation("org.junit.platform:junit-platform-testkit:$junitPlatformVersion")
     testImplementation("org.junit.platform:junit-platform-engine:1.6.0")
     testImplementation("org.scalatest:scalatest_$testScalaLibraryVersion:3.3.0-SNAP3")
     testImplementation("org.scala-lang:scala-library:$testScalaVersion")

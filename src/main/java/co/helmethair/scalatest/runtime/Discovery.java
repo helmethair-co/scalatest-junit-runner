@@ -7,29 +7,54 @@ import co.helmethair.scalatest.descriptor.ScalatestTestDescriptor;
 import co.helmethair.scalatest.scala.ScalaConversions;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestTag;
+import org.scalatest.DoNotDiscover;
 import org.scalatest.Suite;
 import org.scalatest.TagAnnotation;
 import scala.Option;
 
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.*;
+
 public class Discovery {
 
-    public ScalatestEngineDescriptor discover(ScalatestEngineDescriptor engineDescriptor, List<Class<? extends Suite>> classes, ClassLoader classLoader) {
+    @SuppressWarnings("unchecked")
+    public ScalatestEngineDescriptor discover(ScalatestEngineDescriptor engineDescriptor, Set<String> classes, ClassLoader classLoader) {
         classes.forEach(c -> {
+            Class<?> aClass = null;
             try {
-                Suite suite = ((Suite) classLoader.loadClass(c.getName()).newInstance());
-                addSuite(suite, engineDescriptor);
+                aClass = classLoader.loadClass(c);
+                if (isScalaSuite(aClass)) {
+                    Suite suite = ((Suite) aClass.newInstance());
+                    addSuite(suite, engineDescriptor);
+                }
             } catch (Throwable e) {
-                addFailedInit(e, c, engineDescriptor);
+                if (aClass != null && Suite.class.isAssignableFrom(aClass)) {
+                    addFailedInit(e, (Class<? extends Suite>) aClass, engineDescriptor);
+                } else {
+                    addFailedInit(e, c, engineDescriptor);
+                }
             }
         });
 
         return engineDescriptor;
+    }
+
+    private boolean isScalaSuite(Class<?> c) {
+        return !(c.getEnclosingMethod() != null //only local or anonymous classes have an enclosing method
+            || c.isSynthetic()
+            || Modifier.isAbstract(c.getModifiers())
+            || c.getAnnotation(DoNotDiscover.class) != null)
+            && Suite.class.isAssignableFrom(c);
+    }
+
+    private void addFailedInit(Throwable cause, String className, TestDescriptor parent) {
+        ScalatestFailedInitDescriptor failed = new ScalatestFailedInitDescriptor(cause, className, emptySet());
+        linkChild(parent, failed);
     }
 
     private void addFailedInit(Throwable cause, Class<? extends Suite> clazz, TestDescriptor parent) {
@@ -74,6 +99,6 @@ public class Discovery {
             return ScalaConversions.setAsJavaSet(tagSetOption.get()).stream()
                     .map(TestTag::create).collect(Collectors.toSet());
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 }
