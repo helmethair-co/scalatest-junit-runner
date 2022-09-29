@@ -13,7 +13,6 @@ import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.UniqueIdSelector;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,8 +36,8 @@ public class ScalatestEngine implements TestEngine {
 
         return runtime.discover(engineDescriptor,
             Stream.concat(
-                discoverClassSelectors(discoveryRequest).stream(),
-                discoverUniqueIdSelectors(discoveryRequest).stream()
+                discoverClassSelectors(discoveryRequest),
+                discoverUniqueIdSelectors(discoveryRequest)
             ).collect(Collectors.toSet()),
             Thread.currentThread().getContextClassLoader());
     }
@@ -55,17 +54,16 @@ public class ScalatestEngine implements TestEngine {
         executor.executeTest(executionRequest.getRootTestDescriptor(), reporter);
     }
 
-    private List<String> discoverUniqueIdSelectors(EngineDiscoveryRequest discoveryRequest) {
+    private Stream<String> discoverUniqueIdSelectors(EngineDiscoveryRequest discoveryRequest) {
         return discoveryRequest.getSelectorsByType(UniqueIdSelector.class).stream()
             .map(this::getSuite)
             .filter(Optional::isPresent)
-            .map(Optional::get)
-            .collect(Collectors.toList());
+            .map(Optional::get);
     }
 
     private Optional<String> getSuite(UniqueIdSelector u) {
         UniqueId uniqueId = u.getUniqueId();
-        if (uniqueId.hasPrefix(UniqueId.forEngine(ID))) {
+        if (uniqueId.hasPrefix(UniqueId.forEngine(ID)) && uniqueId.getSegments().size() > 1) {
             UniqueId.Segment segment = uniqueId.getSegments().get(1);
             if (SUITE_TYPE.equals(segment.getType())) {
                 return Optional.of(segment.getValue());
@@ -74,9 +72,8 @@ public class ScalatestEngine implements TestEngine {
         return Optional.empty();
     }
 
-    private List<String> discoverClassSelectors(EngineDiscoveryRequest discoveryRequest) {
+    private Stream<String> discoverClassSelectors(EngineDiscoveryRequest discoveryRequest) {
         return discoveryRequest.getSelectorsByType(ClassSelector.class).stream()
-            .map(ClassSelector::getClassName)
-            .collect(Collectors.toList());
+            .map(ClassSelector::getClassName);
     }
 }

@@ -9,7 +9,9 @@ import org.junit.platform.testkit.engine.EngineTestKit;
 public class UniqueIdTest implements TestHelpers {
 
     @ParameterizedTest
-    @CsvSource({"[engine:scalatest]/[suite:tests.NestedTest], 2, 0",
+    @CsvSource({
+        "[engine:scalatest], 0, 0",
+        "[engine:scalatest]/[suite:tests.NestedTest], 2, 0",
         // For now, it does not support really executing the selected test, it will execute the whole suite
         "[engine:scalatest]/[suite:tests.NestedTest]/[test:nested test1], 2, 0",
         "[engine:scalatest]/[foo:tests.NestedTest], 0, 0",
