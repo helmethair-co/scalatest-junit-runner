@@ -1,6 +1,6 @@
 plugins {
     id 'scala'
-    id "com.adtran.scala-multiversion-plugin" version "1.0.35"
+    id "com.adtran.scala-multiversion-plugin" version "2.0.4"
 }
 
 repositories {
@@ -10,7 +10,7 @@ repositories {
 dependencies {
     implementation "org.scala-lang:scala-library:%scala-version%"
 
-    testImplementation "org.scalatest:scalatest_%%:3.2.0-M3"
+    testImplementation "org.scalatest:scalatest_%%:3.2.13"
     testRuntimeOnly "org.junit.platform:junit-platform-engine:$junit_platform_version"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junit_platform_version"
     testRuntimeOnly fileTree(dir: '../build/libs/', include: '*.jar')
