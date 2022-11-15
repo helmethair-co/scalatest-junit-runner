@@ -63,7 +63,7 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-engine:1.6.0")
     testImplementation("org.scalatest:scalatest_$testScalaLibraryVersion:3.3.0-SNAP3")
     testImplementation("org.scala-lang:scala-library:$testScalaVersion")
-    testImplementation("org.mockito:mockito-core:4.8.1")
+    testImplementation("org.mockito:mockito-core:4.9.0")
 }
 
 sourceSets {
