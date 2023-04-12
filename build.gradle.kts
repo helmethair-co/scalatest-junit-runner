@@ -53,7 +53,7 @@ dependencies {
     val testScalaVersion = "$testScalaLibraryVersion.4"
 
     compileOnly("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
-    compileOnly("org.scalatest:scalatest_2.11:3.3.0-SNAP3")
+    compileOnly("org.scalatest:scalatest_2.11:3.3.0-SNAP4")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
