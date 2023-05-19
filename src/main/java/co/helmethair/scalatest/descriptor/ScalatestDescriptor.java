@@ -14,6 +14,7 @@ public abstract class ScalatestDescriptor implements TestDescriptor {
     final static UniqueId ENGINE_ID = UniqueId.forEngine(ScalatestEngine.ID);
     static final ConcurrentHashMap<UniqueId, ScalatestDescriptor> descriptorsById = new ConcurrentHashMap<>();
     public static final String SUITE_TYPE = "suite";
+    public static final String INIT_FAILURE_TYPE = "failed";
     private final UniqueId id;
     private TestDescriptor parentDescriptor = null;
     private Set<TestDescriptor> childDescriptors = new HashSet<TestDescriptor>();
