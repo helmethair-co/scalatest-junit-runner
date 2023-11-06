@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     val junitPlatformVersion = "1.10.0"
-    val junitJupiterVersion = "5.10.0"
+    val junitJupiterVersion = "5.10.1"
 
     val testScalaLibraryVersion = "2.13"
     val testScalaVersion = "$testScalaLibraryVersion.4"
