@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/helmethair-co/scalatest-junit-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/helmethair-co/scalatest-junit-runner)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/co.helmethair/scalatest-junit-runner)
 
-[JUnit 5](https://junit.org/junit5/docs/current/user-guide/) runner library for [ScalaTest](http://www.scalatest.org/) tests. It can be used to fully [integrate Scalatest into Gradle](https://www.baeldung.com/junit-5-gradle) (version >= 4.5) and to Maven. 
+[JUnit 5](https://junit.org/junit5/docs/current/user-guide/) runner library for [ScalaTest](http://www.scalatest.org/) tests. It can be used to fully [integrate ScalaTest into Gradle](https://www.baeldung.com/junit-5-gradle) (version >= 4.5) and to Maven. 
 
 There is an open [issue](https://github.com/scalatest/scalatest/issues/1454) to natively support JUnit 5 in ScalaTest without this library.
 
@@ -13,7 +13,7 @@ There is an open [issue](https://github.com/scalatest/scalatest/issues/1454) to 
 * Running ScalaTest test on the Junit 5 platform
 * Fully integrate ScalaTest into gradle
 * Report individual test runs
-* Report errors to Junit 5 with stack-traces
+* Report errors to JUnit 5 with stack traces
 * Support ScalaTest tags
 * Optional early stopping after the first test fail
 
@@ -21,8 +21,8 @@ There is an open [issue](https://github.com/scalatest/scalatest/issues/1454) to 
 
 ### Gradle
 version >= 4.5
-This library allows to run scalatest on the new JUnit Platform (JUnit 5) 
-To run Scalatest on the old JUnit Vintage (JUnit 4) platform use the [gradle-scalatest](https://plugins.gradle.org/plugin/com.github.maiflai.scalatest) Gradle plugin.
+This library allows to run ScalaTest on the new JUnit Platform (JUnit 5) 
+To run ScalaTest on the old JUnit Vintage (JUnit 4) platform use the [gradle-scalatest](https://plugins.gradle.org/plugin/com.github.maiflai.scalatest) Gradle plugin.
 
 #### Groovy
 gradle.properties
@@ -146,7 +146,7 @@ Add the library to the classpath and run your test
 ## Built With
 
 * [ScalaTest](http://www.scalatest.org)
-* [Kotlin](http://kotlinlang.org/) - Kotlin DSL for Gralde
+* [Kotlin](http://kotlinlang.org/) - Kotlin DSL for Gradle
 * [Gradle](http://gradle.org/) - Build tool
 * [Gradle Test Logger Plugin](https://plugins.gradle.org/plugin/com.adarshr.test-logger) 
 * [semver-git-plugin](https://github.com/ilovemilk/semver-git-plugin)
