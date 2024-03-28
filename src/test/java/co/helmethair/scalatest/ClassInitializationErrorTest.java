@@ -8,8 +8,11 @@ import org.junit.platform.engine.ExecutionRequest;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.launcher.TestExecutionListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 
 public class ClassInitializationErrorTest implements TestHelpers {
@@ -38,5 +41,23 @@ public class ClassInitializationErrorTest implements TestHelpers {
         String testId = "[engine:scalatest]/[failed:tests.InitErrorTaggedTest]";
         verifyTestStartReported(testId, listener);
         verifyTestFailReported(testId, listener);
+    }
+
+    @Test
+    void discoversFailedToInitializeClassByUniqueIdDescriptor() {
+        EngineDiscoveryRequest initialDiscoveryRequest = createClassDiscoveryRequest("tests.InitErrorTest");
+        TestDescriptor initialDiscoveryResult = engine.discover(initialDiscoveryRequest, engineId);
+        TestDescriptor initErrorDescriptor = uniqueChild(initialDiscoveryResult);
+        assertEquals("[engine:scalatest]/[failed:tests.InitErrorTest]", initErrorDescriptor.getUniqueId().toString());
+
+        EngineDiscoveryRequest idBasedDiscoveryRequest = createUniqueIdDiscoveryRequest(initErrorDescriptor.getUniqueId().toString());
+        TestDescriptor idBasedDiscoveryResult = engine.discover(idBasedDiscoveryRequest, engineId);
+        assertEquals("[engine:scalatest]/[failed:tests.InitErrorTest]", uniqueChild(idBasedDiscoveryResult).getUniqueId().toString());
+    }
+
+    private static TestDescriptor uniqueChild(TestDescriptor parent) {
+        Set<? extends TestDescriptor> children = parent.getChildren();
+        assertEquals(1, children.size());
+        return new ArrayList<>(children).get(0);
     }
 }

@@ -12,7 +12,7 @@ public class ScalatestFailedInitDescriptor extends ScalatestDescriptor {
     private final String suiteId;
 
     public ScalatestFailedInitDescriptor(Throwable cause, String name, Set<TestTag> tags) {
-        super(ENGINE_ID.append("failed", name));
+        super(ENGINE_ID.append(INIT_FAILURE_TYPE, name));
         this.cause = cause;
         this.suiteId = name;
         this.tags = tags;
