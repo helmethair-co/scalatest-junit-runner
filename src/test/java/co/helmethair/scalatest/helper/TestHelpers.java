@@ -4,6 +4,7 @@ import co.helmethair.scalatest.ScalatestEngine;
 import org.junit.platform.engine.*;
 import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
+import org.junit.platform.engine.discovery.UniqueIdSelector;
 import org.junit.platform.launcher.*;
 import org.junit.platform.launcher.core.LauncherConfig;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -21,12 +22,16 @@ public interface TestHelpers {
 
     ScalatestEngine engine = new ScalatestEngine();
 
+    default EngineDiscoveryRequest createUniqueIdDiscoveryRequest(String... uniqueIds) {
+        return createUniqueIdDiscoveryRequest(null, uniqueIds);
+    }
+
     default EngineDiscoveryRequest createClassDiscoveryRequest(String... classNames) {
         return createClassDiscoveryRequest(null, classNames);
     }
 
     default ConfigurationParameters configurationParametersOf(Map<String, Object> configParams) {
-        return new ConfigurationParameters() {            
+        return new ConfigurationParameters() {
             @Override
             public Set<String> keySet() {
                 return configParams.keySet();
@@ -56,6 +61,29 @@ public interface TestHelpers {
             public <T extends DiscoverySelector> List<T> getSelectorsByType(Class<T> selectorType) {
                 if (selectorType == ClassSelector.class) {
                     return ((List<T>) Arrays.stream(classNames).map(DiscoverySelectors::selectClass).collect(Collectors.toList()));
+                }
+                return Collections.emptyList();
+            }
+
+            @Override
+            public <T extends DiscoveryFilter<?>> List<T> getFiltersByType(Class<T> filterType) {
+                return null;
+            }
+
+            @Override
+            public ConfigurationParameters getConfigurationParameters() {
+                return configParams;
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    default EngineDiscoveryRequest createUniqueIdDiscoveryRequest(ConfigurationParameters configParams, String... uniqueIds) {
+        return new EngineDiscoveryRequest() {
+            @Override
+            public <T extends DiscoverySelector> List<T> getSelectorsByType(Class<T> selectorType) {
+                if (selectorType == UniqueIdSelector.class) {
+                    return ((List<T>) Arrays.stream(uniqueIds).map(DiscoverySelectors::selectUniqueId).collect(Collectors.toList()));
                 }
                 return Collections.emptyList();
             }

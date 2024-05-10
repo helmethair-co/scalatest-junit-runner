@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static co.helmethair.scalatest.descriptor.ScalatestDescriptor.INIT_FAILURE_TYPE;
 import static co.helmethair.scalatest.descriptor.ScalatestDescriptor.SUITE_TYPE;
 
 public class ScalatestEngine implements TestEngine {
@@ -65,7 +66,7 @@ public class ScalatestEngine implements TestEngine {
         UniqueId uniqueId = u.getUniqueId();
         if (uniqueId.hasPrefix(UniqueId.forEngine(ID)) && uniqueId.getSegments().size() > 1) {
             UniqueId.Segment segment = uniqueId.getSegments().get(1);
-            if (SUITE_TYPE.equals(segment.getType())) {
+            if (SUITE_TYPE.equals(segment.getType()) || INIT_FAILURE_TYPE.equals(segment.getType())) {
                 return Optional.of(segment.getValue());
             }
         }
